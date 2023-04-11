@@ -3,11 +3,11 @@ import java.util.ArrayList;
 
 public abstract class Algorithm {
 
-    private int pn;                      //processes number
-    private ArrayList<Process> ps;       //process array
-    private ArrayList<Burst> bs;
-    private int avgwt;                   //Average waiting time
-    private int avgta;                   //Average turn around time
+    private int pn;                      //Processes Number
+    private ArrayList<Process> ps;       //Process ArrayList
+    private ArrayList<Burst> bs;         //Bursts ArrayList
+    private int avgwt;                   //Average Waiting Time
+    private int avgta;                   //Average Turn Around Time
     private boolean isComplete = false;
 
     public Algorithm(int pn, ArrayList<Process> ps){
@@ -17,7 +17,7 @@ public abstract class Algorithm {
 
     /*
     * Function "schedule":
-    * Compute completion and waiting time for all uncompleted processes at "start_time"
+    * Compute completion and waiting time for all not completed processes at "start_time"
     * Fill up the burst ArrayList "bs"
     * Set isComplete flag
     */
