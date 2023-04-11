@@ -13,7 +13,7 @@ public class Process {
         this.pid = pid;
         this.ar = ar;
         this.bt = bt;
-        this.priority = Integer.parseInt(null);
+        this.priority = 0;
     }
 
     public Process(int pid, int ar, int bt, int priority){
