@@ -1,5 +1,4 @@
-package com.example.operating_system_project;
-
+package com.example.os_project;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -20,14 +19,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class HelloApplication extends Application {
 
+public class HelloApplication extends Application {
     private Button buttonOK;
     private Label labelScheduler;
     private Label labelProcess;
     private Label labelTitle;
     private TextField textProcess;
-    private ComboBox comboBoxSchedulers;
+    private static ComboBox comboBoxSchedulers;
     private String [] schedulers;
 
     private FlowPane flowPane;
@@ -37,6 +36,7 @@ public class HelloApplication extends Application {
         schedulers = new String[]{"FCFS","SJF Preemptive", "SJF Non Preemptive" , "Priority Preemptive","Priority Non Preemptive","Round Robin"};
         buttonOK=new Button("OK");
         FlowPane flowPane1 = new FlowPane(buttonOK);
+        flowPane1.setAlignment(Pos.CENTER);
         labelScheduler = new Label("SchedulerType");
         labelScheduler.setFont(Font.font("Arial",FontWeight.BOLD,14));
         labelProcess = new Label("Number of processes");
@@ -58,8 +58,13 @@ public class HelloApplication extends Application {
         stage.setTitle("Scheduler Project");
         stage.setScene(scene);
         stage.show();
+        buttonOK.setOnAction(new HelloController());
     }
 
+    static String getScheduler(){
+        final String scheduler = comboBoxSchedulers.getSelectionModel().getSelectedItem().toString();
+        return scheduler;
+    }
     public static void main(String[] args) {
         launch();
     }

@@ -1,4 +1,5 @@
-package com.example.operating_system_project;
+package com.example.os_project;
+
 import java.util.ArrayList;
 
 public abstract class Algorithm {
@@ -16,11 +17,11 @@ public abstract class Algorithm {
     }
 
     /*
-    * Function "schedule":
-    * Compute completion and waiting time for all processes which have remaining time "rt" != 0
-    * Fill up the burst ArrayList "bs"
-    * Set isComplete flag
-    */
+     * Function "schedule":
+     * Compute completion and waiting time for all processes which have remaining time "rt" != 0
+     * Fill up the burst ArrayList "bs"
+     * Set isComplete flag
+     */
     public abstract void schedule();
 
     /*
@@ -41,9 +42,9 @@ public abstract class Algorithm {
     }
 
     /*
-    * Function "compute_avgwt":
-    * Called after schedule function
-    * It computes average waiting time after scheduling
+     * Function "compute_avgwt":
+     * Called after schedule function
+     * It computes average waiting time after scheduling
      */
     public abstract void compute_avgwt();
 

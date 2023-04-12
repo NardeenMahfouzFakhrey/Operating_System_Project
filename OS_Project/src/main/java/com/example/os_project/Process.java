@@ -1,4 +1,4 @@
-package com.example.operating_system_project;
+package com.example.os_project;
 
 public class Process {
     private int pid;            //Process ID
