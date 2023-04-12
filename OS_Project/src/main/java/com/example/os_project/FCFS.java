@@ -3,6 +3,8 @@ package com.example.os_project;
 import java.util.ArrayList;
 
 public class FCFS extends  Algorithm{
+    float avg_waiting_time = 0;
+    float avg_turnaround_time = 0;
     public FCFS(int pn, ArrayList<Process> ps) {
         super(pn, ps);
     }
@@ -14,12 +16,12 @@ public class FCFS extends  Algorithm{
     }
 
     @Override
-    public void compute_avgwt() {
-
+    public float compute_avgwt() {
+        return avg_waiting_time;
     }
 
     @Override
-    public void compute_avgta() {
-
+    public float compute_avgta() {
+        return avg_turnaround_time;
     }
 }

@@ -7,8 +7,8 @@ public abstract class Algorithm {
     private int pn;                      //Processes Number
     private ArrayList<Process> ps;       //Process ArrayList
     private ArrayList<Burst> bs;         //Bursts ArrayList
-    private int avgwt;                   //Average Waiting Time
-    private int avgta;                   //Average Turn Around Time
+    private float avgwt;                   //Average Waiting Time
+    private float avgta;                   //Average Turn Around Time
     private boolean isComplete = false;
 
     public Algorithm(int pn, ArrayList<Process> ps){
@@ -46,9 +46,9 @@ public abstract class Algorithm {
      * Called after schedule function
      * It computes average waiting time after scheduling
      */
-    public abstract void compute_avgwt();
+    public abstract float compute_avgwt();
 
-    public int getAvgwt() {                         /*Called only after Compute_avgwt*/
+    public float getAvgwt() {                         /*Called only after Compute_avgwt*/
         return avgwt;
     }
 
@@ -57,9 +57,9 @@ public abstract class Algorithm {
      * Called after schedule function
      * It computes average turn around time after scheduling
      */
-    public abstract void compute_avgta();
+    public abstract float compute_avgta();
 
-    public int getAvgta() {                         /*Called only after Compute_avgwt*/
+    public float getAvgta() {                         /*Called only after Compute_avgwt*/
         return avgta;
     }
 
