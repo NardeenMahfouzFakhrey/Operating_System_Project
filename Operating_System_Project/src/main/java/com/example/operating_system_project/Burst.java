@@ -1,25 +1,19 @@
 package com.example.operating_system_project;
 
 public class Burst {
-    private int pid;     //Process ID
-    private int st;      //Starting TIme
-    private int ft;     //Finishing Time
+    private Process p;     //Process
+    private int qt;      //Quantum Time
 
-    public Burst(int pid, int st, int ft){
-        this.pid = pid;
-        this.st = st;
-        this.ft = ft;
+    public Burst(Process p, int qt){
+        this.p = p;
+        this.qt = qt;
     }
 
-    public int getPid() {
-        return pid;
+    public Process getP() {
+        return p;
     }
 
-    public int getSt() {
-        return st;
-    }
-
-    public int getFt() {
-        return ft;
+    public int getQt() {
+        return qt;
     }
 }

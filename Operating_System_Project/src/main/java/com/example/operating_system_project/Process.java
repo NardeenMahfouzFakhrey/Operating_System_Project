@@ -6,6 +6,7 @@ public class Process {
     private int ar;             //Arrival Time
     private int bt;             //Burst Time
     private int ct;             //Completion Time
+    private int rt;             //Remaining Time
     private int ta;             //Turn Around Time
     private int wt;             //Waiting Time
 
@@ -13,6 +14,7 @@ public class Process {
         this.pid = pid;
         this.ar = ar;
         this.bt = bt;
+        this.rt = bt;
         this.priority = 0;
     }
 
@@ -20,6 +22,7 @@ public class Process {
         this.pid = pid;
         this.ar = ar;
         this.bt = bt;
+        this.rt = bt;
         this.priority = priority;
     }
 
@@ -63,4 +66,15 @@ public class Process {
         return bt;
     }
 
+    public int getRt() {
+        return rt;
+    }
+
+    public void setRt(int rt) {
+        this.rt = rt;
+    }
+
+    public void decrementRt(){
+        rt--;
+    }
 }

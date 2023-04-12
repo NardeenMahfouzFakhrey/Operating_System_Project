@@ -17,11 +17,11 @@ public abstract class Algorithm {
 
     /*
     * Function "schedule":
-    * Compute completion and waiting time for all not completed processes at "start_time"
+    * Compute completion and waiting time for all processes which have remaining time "rt" != 0
     * Fill up the burst ArrayList "bs"
     * Set isComplete flag
     */
-    public abstract void schedule(int start_time);
+    public abstract void schedule();
 
     /*
      * Function "add_process":
