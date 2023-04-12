@@ -25,7 +25,7 @@ public class HelloApplication extends Application {
     private Label labelScheduler;
     private Label labelProcess;
     private Label labelTitle;
-    private TextField textProcess;
+    private static TextField textProcess;
     private static ComboBox comboBoxSchedulers;
     private String [] schedulers;
 
@@ -35,6 +35,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         schedulers = new String[]{"FCFS","SJF Preemptive", "SJF Non Preemptive" , "Priority Preemptive","Priority Non Preemptive","Round Robin"};
         buttonOK=new Button("OK");
+        buttonOK.setStyle("-fx-padding: 10;-fx-font-size: 14px; -fx-font-weight: bold;");
         FlowPane flowPane1 = new FlowPane(buttonOK);
         flowPane1.setAlignment(Pos.CENTER);
         labelScheduler = new Label("SchedulerType");
@@ -48,19 +49,28 @@ public class HelloApplication extends Application {
         flowPane.setAlignment(Pos.CENTER);
         textProcess=new TextField();
         comboBoxSchedulers = new ComboBox<>(FXCollections.observableArrayList(schedulers));
-        HBox hbox = new HBox(labelScheduler,labelProcess);
-        hbox.setSpacing(30);
-        hbox.setStyle("-fx-padding: 30;");
-        HBox hbox1 = new HBox(comboBoxSchedulers,textProcess);
-        hbox1.setSpacing(25);
-        VBox vbox = new VBox(flowPane,hbox,hbox1,flowPane1);
+        comboBoxSchedulers.setPromptText("Select Scheduler");
+        VBox vboxScheduler = new VBox(labelScheduler,comboBoxSchedulers);
+        vboxScheduler.setSpacing(10);
+        vboxScheduler.setStyle("-fx-padding: 25;");
+        VBox vboxProcess = new VBox(labelProcess,textProcess);
+        vboxProcess.setSpacing(10);
+        vboxProcess.setStyle("-fx-padding: 26;");
+        HBox hbox = new HBox(vboxScheduler,vboxProcess);
+        hbox.setSpacing(15);
+        VBox vbox = new VBox(flowPane,hbox,flowPane1);
+        vbox.setStyle("-fx-padding: 16;");
+        vbox.setSpacing(10);
         Scene scene = new Scene(vbox, 550, 400);
         stage.setTitle("Scheduler Project");
         stage.setScene(scene);
         stage.show();
         buttonOK.setOnAction(new HelloController());
     }
-
+    static String getProcesses(){
+        return
+                textProcess.getText();
+    }
     static String getScheduler(){
         final String scheduler = comboBoxSchedulers.getSelectionModel().getSelectedItem().toString();
         return scheduler;
