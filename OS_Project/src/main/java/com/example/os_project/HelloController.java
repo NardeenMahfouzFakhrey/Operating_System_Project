@@ -5,9 +5,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,13 +20,17 @@ public class HelloController extends HelloApplication implements EventHandler {
     String Processes;
     int nProcesses;
     HBox hBoxRR;
-    VBox vBoxProcess = new VBox();
-    VBox vBoxArrival = new VBox();
-    VBox vBoxBurst = new VBox();
+    VBox vBoxProcess;
+    VBox vBoxArrival;
+    VBox vBoxBurst;
     HBox hBoxP;
+    Button ButtonRun;
     @Override
     public void handle(Event event) {
         Stage stageScheduler = new Stage();
+         vBoxProcess = new VBox();
+         vBoxArrival = new VBox();
+         vBoxBurst = new VBox();
 
         Scheduler = HelloApplication.getScheduler();
         Label labelTitle1 = new Label(Scheduler);
@@ -100,11 +102,22 @@ public class HelloController extends HelloApplication implements EventHandler {
         if(hBoxRR != null){
             VPane.getChildren().add(hBoxRR);
         }
+        ButtonRun = new Button("Run");
+        ButtonRun.setPrefWidth(75);
+        VPane.getChildren().add(ButtonRun);
         VPane.setSpacing(15);
         VPane.setStyle("-fx-padding: 16;");
-        Scene scene = new Scene(VPane, 550, 400);
+        ScrollPane sP = new ScrollPane(VPane);
+        Scene scene = new Scene(sP, 550, 400);
         stageScheduler.setTitle("Scheduler Project");
         stageScheduler.setScene(scene);
         stageScheduler.show();
+        VPane=null;
+        hBoxRR=null;
+        hBoxP=null;
+        vBoxBurst=null;
+        vBoxProcess=null;
+        vBoxArrival=null;
+
     }
 }

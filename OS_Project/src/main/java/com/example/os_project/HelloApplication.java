@@ -36,6 +36,7 @@ public class HelloApplication extends Application {
         schedulers = new String[]{"FCFS","SJF Preemptive", "SJF Non Preemptive" , "Priority Preemptive","Priority Non Preemptive","Round Robin"};
         buttonOK=new Button("OK");
         buttonOK.setStyle("-fx-padding: 10;-fx-font-size: 14px; -fx-font-weight: bold;");
+        buttonOK.setPrefWidth(100);
         FlowPane flowPane1 = new FlowPane(buttonOK);
         flowPane1.setAlignment(Pos.CENTER);
         labelScheduler = new Label("SchedulerType");
@@ -61,7 +62,7 @@ public class HelloApplication extends Application {
         VBox vbox = new VBox(flowPane,hbox,flowPane1);
         vbox.setStyle("-fx-padding: 16;");
         vbox.setSpacing(10);
-        Scene scene = new Scene(vbox, 550, 400);
+        Scene scene = new Scene(vbox, 500, 300);
         stage.setTitle("Scheduler Project");
         stage.setScene(scene);
         stage.show();
