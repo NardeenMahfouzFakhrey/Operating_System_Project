@@ -22,7 +22,7 @@ public abstract class Algorithm {
      * Fill up the burst ArrayList "bs"
      * Set isComplete flag
      */
-    public abstract void schedule();
+    public abstract ArrayList<Burst> schedule(String algo_Type);
 
     /*
      * Function "add_process":
@@ -34,12 +34,12 @@ public abstract class Algorithm {
         ps.add(p);
     };
 
-    public ArrayList<Burst> getBs() {               /*Called only after scheduling*/
-        if(isComplete)
-            return bs;
-        else
-            return null;
-    }
+//    public ArrayList<Burst> getBs() {               /*Called only after scheduling*/
+//        if(isComplete)
+//            return bs;
+//        else
+//            return null;
+//    }
 
     /*
      * Function "compute_avgwt":

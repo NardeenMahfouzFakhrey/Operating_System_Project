@@ -8,8 +8,9 @@ public class FCFS extends  Algorithm{
     }
 
     @Override
-    public void schedule() {
+    public ArrayList<Burst> schedule(String algo_Type){
 
+        return null;
     }
 
     @Override
