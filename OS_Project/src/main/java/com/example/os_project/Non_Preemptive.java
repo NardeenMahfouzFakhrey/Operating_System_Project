@@ -24,6 +24,22 @@ public class Non_Preemptive extends Algorithm {
         Burst b;
         int process_ID = 0;
 
+        for (int i=0; i<number_of_process ;i++){
+            if ( (process.get(i).getRt() < process.get(i).getBt()) && (process.get(i).getRt() != 0)){
+                burst.add(new Burst(process.get(i),process.get(i).getRt()));
+                process.get(i).setRt(0);
+
+            }
+        }
+
+
+        for (int i=0; i<number_of_process ;i++){
+            if (process.get(i).getRt() == 0){
+                process.remove(process.get(i));
+            }
+        }
+
+
         while (process.size() > 0){
             min = Integer.MAX_VALUE;
 
