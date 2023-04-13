@@ -21,10 +21,13 @@ public class Preemptive extends Algorithm {
     public ArrayList<Burst> schedule(String algoType) {
         int min;
         int current_time = 0;
+        int count = 1;
         boolean flag;
         Burst b;
         int process_ID = 0;
         ArrayList<Integer> rt= new ArrayList<>();
+        ArrayList<Burst> result = new ArrayList<>();
+
 
         for (int i=0; i<process.size() ;i++){
             rt.add(process.get(i).getBt());
@@ -56,9 +59,26 @@ public class Preemptive extends Algorithm {
 
         }
 
+        for (int i=0 ; i<burst.size() ; i++ ){
+            int cur = burst.get(i).getP().getPid();
+            for(int j=i+1 ; j<burst.size() ; j++){
+                if (cur == burst.get(j).getP().getPid() ){
+                    count = count + 1;
+                    i=i+1;
+                    if (j == burst.size()-1){
+                        result.add(new Burst(burst.get(i).getP(),count));
+                    }
+                }else {
+                    result.add(new Burst(burst.get(i).getP(),count));
+                    count = 1;
+                    break;
+                }
+            }
+        }
+
         avg_turnaround_time = avg_turnaround_time / number_of_process;
         avg_waiting_time = avg_waiting_time / number_of_process;
-        return burst;
+        return result;
     }
 
     @Override
