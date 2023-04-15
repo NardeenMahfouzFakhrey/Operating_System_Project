@@ -9,15 +9,19 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableListValue;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -31,12 +35,13 @@ public class GanttChart extends Application {
     XYChart.Data data;
 
 
-    @Override public void start(Stage stage) throws InterruptedException {
+    @Override
+    public void start(Stage stage) throws InterruptedException {
         stage.setTitle("Gantt Chart");
         final NumberAxis xAxis = new NumberAxis(0, 30, 1);
         final CategoryAxis yAxis = new CategoryAxis();
-        final StackedBarChart<Number,String> bc =
-                new StackedBarChart<>(xAxis,yAxis);
+        final StackedBarChart<Number, String> bc =
+                new StackedBarChart<>(xAxis, yAxis);
 
         bc.setTitle("Gantt Chart");
         bc.setLegendVisible(false);
@@ -48,27 +53,27 @@ public class GanttChart extends Application {
         bc.setCategoryGap(150);
 
         //Color color[] = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.BLACK}
-        String [] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "BLACK"};
+        String[] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "BLACK"};
 
-        Process p1 = new Process(1,0,2); // Red
-        Process p2 = new Process(2,0,4); // Green
-        Process p3 = new Process(3,2,1); // Blue
-        Process p4 = new Process(4,3,5); // Cyan
+        Process p1 = new Process(1, 0, 2); // Red
+        Process p2 = new Process(2, 0, 4); // Green
+        Process p3 = new Process(3, 2, 1); // Blue
+        Process p4 = new Process(4, 3, 5); // Cyan
 
-        Process [] processes = {p1, p2, p3, p4};
+        Process[] processes = {p1, p2, p3, p4};
 
-        for(int i = 0; i < processes.length; i++){
+        for (int i = 0; i < processes.length; i++) {
 
             processes[i].color = color[i];
 
         }
 
-        Burst p1_b1 = new Burst(p1,2);
-        Burst p3_b1 = new Burst(p3,1);
-        Burst p2_b1 = new Burst(p2,2);
-        Burst p4_b1 = new Burst(p4,1);
-        Burst p2_b2 = new Burst(p2,2);
-        Burst p4_b2 = new Burst(p4,4);
+        Burst p1_b1 = new Burst(p1, 2);
+        Burst p3_b1 = new Burst(p3, 1);
+        Burst p2_b1 = new Burst(p2, 2);
+        Burst p4_b1 = new Burst(p4, 1);
+        Burst p2_b2 = new Burst(p2, 2);
+        Burst p4_b2 = new Burst(p4, 4);
 
         ArrayList<Burst> bs = new ArrayList<>();
         /*bs.add(b1);
@@ -82,12 +87,12 @@ public class GanttChart extends Application {
         bs.add(p2_b2);
         bs.add(p4_b2);
 
-        TableView tableView =  new TableView();
+        /*TableView tableView = new TableView();
 
-        TableColumn<Process, String> remainingBurstTime   =
+        TableColumn<Process, String> remainingBurstTime =
                 new TableColumn<>("Remaining Burst Time");
 
-        /*for(int i = 0; i < processes.length; i++){
+        for(int i = 0; i < processes.length; i++){
 
             TableColumn<Process, String> column =
                     new TableColumn<>("P" + i);
@@ -99,11 +104,7 @@ public class GanttChart extends Application {
 
             //ObservableValue observableValue = column.getCellObservableValue(0);
 
-
-
             remainingBurstTime.getColumns().add(column);
-
-
 
         }
 
@@ -114,28 +115,31 @@ public class GanttChart extends Application {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);*/
 
         Label processesLabel = new Label("    P1    P2    P3    P4    ");
-        Label remainingBurstTimeLable = new Label("     " + p1.getBt() + "     " + p2.getBt() + "     " + p3.getBt() + "     " +  p4.getBt());
+        Label remainingBurstTimeLable = new Label("     " + p1.getBt() + "     " + p2.getBt() + "     " + p3.getBt() + "     " + p4.getBt());
+
+        ChartLegend chartLegend = new ChartLegend(processes);
+        chartLegend.setAlignment(Pos.CENTER);
 
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(bc, processesLabel, remainingBurstTimeLable);
+        vBox.getChildren().addAll(bc, chartLegend, processesLabel, remainingBurstTimeLable);
 
         StackPane root = new StackPane();
         root.getChildren().add(vBox);
 
 
-        Scene scene  = new Scene(root,1300,700);
+        Scene scene = new Scene(root, 1300, 700);
         stage.setScene(scene);
         stage.show();
 
         ArrayList<XYChart.Series> series = new ArrayList<>();
 
-        for(int i=0; i<bs.size(); i++){
+        for (int i = 0; i < bs.size(); i++) {
 
             Burst b = bs.get(i);
             XYChart.Series s = new XYChart.Series();
-            s.setName("P("+b.getP().getPid()+")");
-            s.getData().add(new XYChart.Data(0,""));
+            s.setName("P(" + b.getP().getPid() + ")");
+            s.getData().add(new XYChart.Data(0, ""));
             series.add(s);
             bc.getData().add(s);
         }
@@ -145,7 +149,7 @@ public class GanttChart extends Application {
                 new KeyFrame(Duration.millis(1000), (ActionEvent actionEvent) -> {
 
 
-                    data = new XYChart.Data<>(bs.get(i).getQt(),"");
+                    data = new XYChart.Data<>(bs.get(i).getQt(), "");
                     data.nodeProperty().addListener(new ChangeListener<Node>() {
                         @Override
                         public void changed(ObservableValue<? extends Node> ov, Node oldNode, Node newNode) {
@@ -160,7 +164,7 @@ public class GanttChart extends Application {
 
                     String s = "     ";
 
-                    for(int i = 0; i < processes.length; i++){
+                    for (int i = 0; i < processes.length; i++) {
 
                         s += processes[i].getRt();
                         s += "      ";
@@ -169,7 +173,7 @@ public class GanttChart extends Application {
                     }
 
 
-                    if(i == series.size()){
+                    if (i == series.size()) {
                         timeline.stop();
                     }
 
@@ -182,7 +186,30 @@ public class GanttChart extends Application {
 
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    class ChartLegend extends GridPane {
+            ChartLegend(Process[] processes) {
+            setHgap(10);
+            setVgap(10);
+            for (int i = 0; i < processes.length; i++) {
+
+                addColumn(i, createChartLegend(processes[i].color), new Label("P" + i));
+
+            }
+        }
+
+        private Node createChartLegend(String fillStyle) {
+            Shape symbol = new Rectangle(15, 15, 15, 15);
+            symbol.setStyle("-fx-fill: " + fillStyle);
+            //symbol.setStroke(Color.BLACK);
+            symbol.setStrokeWidth(2);
+
+            return symbol;
+        }
+
+        public static void main(String[] args) {
+            launch(args);
+        }
+
+
     }
 }
