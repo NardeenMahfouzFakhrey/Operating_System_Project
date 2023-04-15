@@ -12,9 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -84,21 +82,18 @@ public class GanttChart extends Application {
         bs.add(p2_b2);
         bs.add(p4_b2);
 
-        Label labelCnt = new Label();
-        Label labelAnimated = new Label();
-
         TableView tableView =  new TableView();
 
         TableColumn<Process, String> remainingBurstTime   =
                 new TableColumn<>("Remaining Burst Time");
 
-        for(int i = 0; i < processes.length; i++){
+        /*for(int i = 0; i < processes.length; i++){
 
             TableColumn<Process, String> column =
                     new TableColumn<>("P" + i);
 
             column.setCellValueFactory(
-                    new PropertyValueFactory<>("P" + i));
+                    new PropertyValueFactory<>("getRt"));
 
             column.setSortable(false);
 
@@ -110,16 +105,20 @@ public class GanttChart extends Application {
 
 
 
-
-
         }
 
         tableView.getColumns().add(remainingBurstTime);
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        //tableView.getItems().add(p1);
+
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);*/
+
+        Label processesLabel = new Label("    P1    P2    P3    P4    ");
+        Label remainingBurstTimeLable = new Label("     " + p1.getBt() + "     " + p2.getBt() + "     " + p3.getBt() + "     " +  p4.getBt());
 
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(bc, tableView, labelAnimated);
+        vBox.getChildren().addAll(bc, processesLabel, remainingBurstTimeLable);
 
         StackPane root = new StackPane();
         root.getChildren().add(vBox);
@@ -159,6 +158,17 @@ public class GanttChart extends Application {
 
                     i++;
 
+                    String s = "     ";
+
+                    for(int i = 0; i < processes.length; i++){
+
+                        s += processes[i].getRt();
+                        s += "      ";
+                        remainingBurstTimeLable.setText(s);
+
+                    }
+
+
                     if(i == series.size()){
                         timeline.stop();
                     }
@@ -171,7 +181,6 @@ public class GanttChart extends Application {
         bc.setAnimated(false);
 
     }
-
 
     public static void main(String[] args) {
         launch(args);
