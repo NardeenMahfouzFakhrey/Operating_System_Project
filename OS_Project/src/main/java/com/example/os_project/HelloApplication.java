@@ -41,7 +41,7 @@ public class HelloApplication extends Application {
         buttonOK.setPrefWidth(100);
         FlowPane flowPane1 = new FlowPane(buttonOK);
         flowPane1.setAlignment(Pos.CENTER);
-        labelScheduler = new Label("SchedulerType");
+        labelScheduler = new Label("Scheduler Type");
         labelScheduler.setFont(Font.font("Arial",FontWeight.BOLD,14));
         labelProcess = new Label("Number of processes");
         labelProcess.setFont(Font.font("Arial",FontWeight.BOLD,14));

@@ -4,12 +4,21 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableListValue;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -38,7 +47,7 @@ public class GanttChart extends Application {
         yAxis.setLabel("Process");
         yAxis.setTickLabelRotation(0);
 
-        bc.setCategoryGap(350);
+        bc.setCategoryGap(150);
 
         //Color color[] = {Color.RED, Color.BLUE, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.BLACK}
         String [] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "BLACK"};
@@ -75,8 +84,48 @@ public class GanttChart extends Application {
         bs.add(p2_b2);
         bs.add(p4_b2);
 
+        Label labelCnt = new Label();
+        Label labelAnimated = new Label();
 
-        Scene scene  = new Scene(bc,800,600);
+        TableView tableView =  new TableView();
+
+        TableColumn<Process, String> remainingBurstTime   =
+                new TableColumn<>("Remaining Burst Time");
+
+        for(int i = 0; i < processes.length; i++){
+
+            TableColumn<Process, String> column =
+                    new TableColumn<>("P" + i);
+
+            column.setCellValueFactory(
+                    new PropertyValueFactory<>("P" + i));
+
+            column.setSortable(false);
+
+            //ObservableValue observableValue = column.getCellObservableValue(0);
+
+
+
+            remainingBurstTime.getColumns().add(column);
+
+
+
+
+
+        }
+
+        tableView.getColumns().add(remainingBurstTime);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(bc, tableView, labelAnimated);
+
+        StackPane root = new StackPane();
+        root.getChildren().add(vBox);
+
+
+        Scene scene  = new Scene(root,1300,700);
         stage.setScene(scene);
         stage.show();
 
@@ -106,6 +155,8 @@ public class GanttChart extends Application {
                     });
 
                     series.get(i).getData().set(0, data);
+                    bs.get(i).getP().decrementRt(bs.get(i).getQt());
+
                     i++;
 
                     if(i == series.size()){
@@ -120,6 +171,7 @@ public class GanttChart extends Application {
         bc.setAnimated(false);
 
     }
+
 
     public static void main(String[] args) {
         launch(args);

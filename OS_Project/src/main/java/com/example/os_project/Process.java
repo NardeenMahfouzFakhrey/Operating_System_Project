@@ -75,7 +75,7 @@ public class Process {
         this.rt = rt;
     }
 
-    public void decrementRt(){
-        rt--;
+    public void decrementRt(int qt){
+        rt -= qt;
     }
 }
