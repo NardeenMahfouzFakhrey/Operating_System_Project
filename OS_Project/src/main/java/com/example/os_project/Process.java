@@ -9,6 +9,7 @@ public class Process {
     private int rt;             //Remaining Time
     private int ta;             //Turn Around Time
     private int wt;             //Waiting Time
+    public String color;
 
     public Process(int pid, int ar, int bt){
         this.pid = pid;

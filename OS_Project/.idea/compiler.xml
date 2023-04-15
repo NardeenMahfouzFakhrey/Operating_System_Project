@@ -13,4 +13,9 @@
       <module name="OS_Project" target="18" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="OS_Project" options="--add-exports java.datatransfer/java.awt=com.example.os_project" />
+    </option>
+  </component>
 </project>
