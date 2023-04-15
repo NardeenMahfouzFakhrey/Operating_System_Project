@@ -31,7 +31,7 @@ public class GanttChart extends Application {
 
     Boolean done = false;
     int time = 1000;
-    int i = 0;
+    int i = 0,j = 0;
     XYChart.Data data;
 
 
@@ -76,10 +76,7 @@ public class GanttChart extends Application {
         Burst p4_b2 = new Burst(p4, 4);
 
         ArrayList<Burst> bs = new ArrayList<>();
-        /*bs.add(b1);
-        bs.add(b2);
-        bs.add(b3);
-        bs.add(b4);*/
+
         bs.add(p1_b1);
         bs.add(p3_b1);
         bs.add(p2_b1);
@@ -134,33 +131,44 @@ public class GanttChart extends Application {
 
         ArrayList<XYChart.Series> series = new ArrayList<>();
 
-        for (int i = 0; i < bs.size(); i++) {
-
+        for(int i=0; i<bs.size(); i++){
             Burst b = bs.get(i);
-            XYChart.Series s = new XYChart.Series();
-            s.setName("P(" + b.getP().getPid() + ")");
-            s.getData().add(new XYChart.Data(0, ""));
-            series.add(s);
-            bc.getData().add(s);
+
+            for(int j=0; j<b.getQt(); j++){
+                XYChart.Series s = new XYChart.Series();
+                s.setName("P("+ b.getP().getPid()+ ")");
+                s.getData().add(new XYChart.Data(0,""));
+                series.add(s);
+                bc.getData().add(s);
+            }
         }
 
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.millis(1000), (ActionEvent actionEvent) -> {
 
+                    if(j == series.size()-1){
+                        timeline.stop();
+                    }
 
-                    data = new XYChart.Data<>(bs.get(i).getQt(), "");
+                    XYChart.Series my_s = series.get(j);
+                    String name = "P("+bs.get(i).getP().getPid()+")";
+                    if( name.compareTo(my_s.getName()) != 0 )
+                        i++;
+                    j++;
+                    Burst b = bs.get(i);
+
+                    data = new XYChart.Data<>(1, "");
                     data.nodeProperty().addListener(new ChangeListener<Node>() {
                         @Override
                         public void changed(ObservableValue<? extends Node> ov, Node oldNode, Node newNode) {
-                            newNode.setStyle("-fx-bar-fill: " + bs.get(i).getP().color + ";");
+                            newNode.setStyle("-fx-bar-fill: " + b.getP().color + ";");
                         }
                     });
 
-                    series.get(i).getData().set(0, data);
-                    bs.get(i).getP().decrementRt(bs.get(i).getQt());
+                    my_s.getData().set(0, data);
+                    b.getP().decrementRt(1);
 
-                    i++;
 
                     String s = "     ";
 
@@ -171,12 +179,6 @@ public class GanttChart extends Application {
                         remainingBurstTimeLable.setText(s);
 
                     }
-
-
-                    if (i == series.size()) {
-                        timeline.stop();
-                    }
-
                 }));
 
 
