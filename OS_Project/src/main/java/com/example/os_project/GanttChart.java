@@ -194,7 +194,7 @@ public class GanttChart extends Application {
             setVgap(10);
             for (int i = 0; i < processes.length; i++) {
 
-                addColumn(i, createChartLegend(processes[i].color), new Label("P" + i));
+                addColumn(i, createChartLegend(processes[i].color), new Label("P" + processes[i].getPid()));
 
             }
         }
