@@ -78,4 +78,14 @@ public class Process {
     public void decrementRt(int qt){
         rt -= qt;
     }
+    @Override
+    protected Object clone() {
+        Process cloneP = new Process(this.pid, this.ar, this.bt, this.priority);
+        cloneP.setRt(this.rt);
+        cloneP.setCt(this.ct);
+        cloneP.setTa(this.ta);
+        cloneP.setWt(this.wt);
+        cloneP.color = new String(this.color);
+        return cloneP;
+    }
 }

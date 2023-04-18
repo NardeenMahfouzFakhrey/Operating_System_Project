@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class Algorithm {
 
     private int pn;                      //Processes Number
-    private ArrayList<Process> ps;       //Process ArrayList
+    public ArrayList<Process> ps;       //Process ArrayList
     private ArrayList<Burst> bs;         //Bursts ArrayList
     private float avgwt;                   //Average Waiting Time
     private float avgta;                   //Average Turn Around Time

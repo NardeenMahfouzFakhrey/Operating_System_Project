@@ -13,7 +13,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+//import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -51,7 +51,7 @@ public class SchedulingApp extends Application {
     TextField textProcess = null;
     String Processes = null;
     int nProcesses;
-    public ArrayList<Process> ps;
+    public ArrayList<Process> ps,ps2;
     int quantum;
     Boolean isPriority;
     Boolean isQuantum;
@@ -351,6 +351,19 @@ public class SchedulingApp extends Application {
     }
 
     public void scene3(Stage stage){
+
+        String[] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "BLACK"};
+
+        String pLabel = new String("");
+        String btLabel = new String("");
+
+        for (int i = 0; i < nProcesses; i++) {
+            Process p = ps.get(i);
+            p.color = color[i];
+            pLabel.concat("    P" + p.getPid());
+            btLabel.concat("     " + p.getBt());
+        }
+
         Algorithm algo = null;
 
         switch(scheduler){
@@ -373,13 +386,13 @@ public class SchedulingApp extends Application {
                 algo = new Non_Preemptive(ps.size(), ps);
                 break;
         }
+
         if(algo != null){
             bs = algo.schedule(scheduler);
         }
 
         Boolean done = false;
         int time = 1000;
-
 
         final NumberAxis xAxis = new NumberAxis(0, 30, 1);
         final CategoryAxis yAxis = new CategoryAxis();
@@ -394,26 +407,18 @@ public class SchedulingApp extends Application {
         yAxis.setTickLabelRotation(0);
         bc.setCategoryGap(150);
 
-        String[] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "BLACK"};
+        System.out.println(pLabel);
+        System.out.println(btLabel);
 
-        String pLabel = new String("");
-        String btLabel = new String("");
-        for (int i = 0; i < ps.size(); i++) {
-            Process p = ps.get(i);
-            p.color = color[i];
-            pLabel.concat("    P" + p.getPid());
-            btLabel.concat("     " + p.getBt());
-        }
         Label processesLabel = new Label(pLabel);
         Label remainingBurstTimeLable = new Label(btLabel);
 
-        //ChartLegend chartLegend = new ChartLegend();
-        //chartLegend.setAlignment(Pos.CENTER);
-
+        ChartLegend chartLegend = new ChartLegend();
+        chartLegend.setAlignment(Pos.CENTER);
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(bc, processesLabel, remainingBurstTimeLable);
-        // chartLegend,
+        vBox.getChildren().addAll(bc, chartLegend, processesLabel, remainingBurstTimeLable);
+
         StackPane root = new StackPane();
         root.getChildren().add(vBox);
 
@@ -436,6 +441,7 @@ public class SchedulingApp extends Application {
                 bc.getData().add(s);
             }
         }
+
 
         Timeline timeline = new Timeline();
         timeline.getKeyFrames().add(
@@ -467,19 +473,15 @@ public class SchedulingApp extends Application {
                     String s = "     ";
 
                     for (int i = 0; i < nProcesses; i++) {
-
                         s += ps.get(i).getRt();
                         s += "      ";
                         remainingBurstTimeLable.setText(s);
-
-
                     }
                 }));
 
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         bc.setAnimated(false);
-
 
     }
 
