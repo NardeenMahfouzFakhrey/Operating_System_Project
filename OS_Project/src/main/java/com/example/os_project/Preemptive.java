@@ -36,9 +36,9 @@ public class Preemptive extends Algorithm {
         while (process.size() > 0){
             min = Integer.MAX_VALUE;
             for (int i=0; i < process.size(); i++){
-                flag = (algoType == "s") ? (rt.get(i) < min) : (process.get(i).getPriority() < min);
+                flag = (algoType == "SJF Preemptive") ? (rt.get(i) < min) : (process.get(i).getPriority() < min);
                 if(process.get(i).getAr() <= current_time && flag){
-                    min = (algoType == "s") ? (rt.get(i)) : (process.get(i).getPriority());
+                    min = (algoType == "SJF Preemptive") ? (rt.get(i)) : (process.get(i).getPriority());
                     process_ID = i;
                 }
             }

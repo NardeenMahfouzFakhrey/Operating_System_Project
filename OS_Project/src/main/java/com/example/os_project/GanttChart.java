@@ -112,7 +112,9 @@ public class GanttChart extends Application {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);*/
 
         Label processesLabel = new Label("    P1    P2    P3    P4    ");
+        //processesLabel.setAlignment(Pos.CENTER);
         Label remainingBurstTimeLable = new Label("     " + p1.getBt() + "     " + p2.getBt() + "     " + p3.getBt() + "     " + p4.getBt());
+        //remainingBurstTimeLable.setAlignment(Pos.CENTER);
 
         ChartLegend chartLegend = new ChartLegend(processes);
         chartLegend.setAlignment(Pos.CENTER);
@@ -177,6 +179,7 @@ public class GanttChart extends Application {
                         s += processes[i].getRt();
                         s += "      ";
                         remainingBurstTimeLable.setText(s);
+
 
                     }
                 }));
