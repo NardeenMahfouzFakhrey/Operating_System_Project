@@ -11,7 +11,7 @@ public class Non_Preemptive extends Algorithm {
 
     public Non_Preemptive(int pn, ArrayList<Process> ps) {
         super(pn, ps);
-        this.process=ps;
+        this.process= (ArrayList<Process>) ps.clone();
         this.number_of_process=pn;
     }
 

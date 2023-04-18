@@ -12,7 +12,7 @@ public class Preemptive extends Algorithm {
 
     public Preemptive(int pn, ArrayList<Process> ps) {
         super(pn, ps);
-        this.process=ps;
+        this.process= (ArrayList<Process>) ps.clone();
         this.number_of_process=pn;
     }
 

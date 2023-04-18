@@ -14,7 +14,7 @@ public class RoundRobin extends Algorithm {
     public RoundRobin(int pn, ArrayList<Process> ps, int quantumTime) {
         super(pn, ps);
         this.quantumTime=quantumTime;
-        this.process=ps;
+        this.process= (ArrayList<Process>) ps.clone();
         this.number_of_process=pn;
     }
 
@@ -22,7 +22,6 @@ public class RoundRobin extends Algorithm {
     public ArrayList<Burst> schedule(String algo_Type){
         int currentTime=0;
         int actualQuantum=quantumTime;
-        int att;
         boolean flag=false;
         while (process.size()>0) {
             for (int i = 0; i < process.size(); i++) {
@@ -34,8 +33,7 @@ public class RoundRobin extends Algorithm {
                         process.get(i).setRt(process.get(i).getRt() - quantumTime);
                         burst.add(new Burst(process.get(i), quantumTime));
                         if (process.get(i).getRt() == 0) {
-                            System.out.println("curr"+currentTime);
-                            att = currentTime-process.get(i).getAr()+quantumTime;
+
                             avg_waiting_time += currentTime- process.get(i).getAr() - process.get(i).getBt()+quantumTime;
                             avg_turnaround_time+=currentTime-process.get(i).getAr()+quantumTime;
                             process.remove(process.get(i));
@@ -45,11 +43,10 @@ public class RoundRobin extends Algorithm {
                     else {
                         actualQuantum = process.get(i).getRt();
                         burst.add(new Burst(process.get(i), actualQuantum));
-                        System.out.println( "cur"+currentTime);
-                        att = currentTime-process.get(i).getAr()+actualQuantum;
+
                         avg_waiting_time += currentTime- process.get(i).getAr() - process.get(i).getBt()+actualQuantum;
                         avg_turnaround_time+=currentTime-process.get(i).getAr()+actualQuantum;
-                        //System.out.println("av "+avg_turnaround_time);
+
                         process.remove(process.get(i));
                         i--;
                     }

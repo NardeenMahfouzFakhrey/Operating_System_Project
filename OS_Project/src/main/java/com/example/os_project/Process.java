@@ -78,6 +78,7 @@ public class Process {
     public void decrementRt(int qt){
         rt -= qt;
     }
+
     @Override
     protected Object clone() {
         Process cloneP = new Process(this.pid, this.ar, this.bt, this.priority);

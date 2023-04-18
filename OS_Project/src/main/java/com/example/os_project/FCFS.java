@@ -12,9 +12,10 @@ public class FCFS extends  Algorithm{
 
     public FCFS(int pn, ArrayList<Process> ps) {
         super(pn, ps);
-        this.process=ps;
+        this.process= (ArrayList<Process>) ps.clone();
         this.number_of_process=pn;
     }
+
     @Override
     public ArrayList<Burst> schedule(String algo_Type){
         int current_time=0;
