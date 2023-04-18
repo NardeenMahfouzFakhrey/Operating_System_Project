@@ -56,6 +56,7 @@ public class SchedulingApp extends Application {
     Boolean isPriority;
     Boolean isQuantum;
     ArrayList<Burst> bs = null;
+    int totalTime;
 
     int r = 0,k = 0;
     XYChart.Data data;
@@ -247,6 +248,7 @@ public class SchedulingApp extends Application {
 
 
         ButtonRun.setOnAction(e -> {
+            totalTime = 0;
             ps = new ArrayList<Process>();
             for(int i=0; i < nProcesses ; i++){
                 if(Ids[i]==null){
@@ -339,7 +341,7 @@ public class SchedulingApp extends Application {
                     }else{
                         ps.add(i,new Process(pid, ar, bt));
                     }
-
+                    totalTime += bt;
                     if(i == (nProcesses-1)){
                         System.out.println(ps.size());
                         scene3(stage);
@@ -394,7 +396,7 @@ public class SchedulingApp extends Application {
         Boolean done = false;
         int time = 1000;
 
-        final NumberAxis xAxis = new NumberAxis(0, 30, 1);
+        final NumberAxis xAxis = new NumberAxis(0, totalTime, 1);
         final CategoryAxis yAxis = new CategoryAxis();
         final StackedBarChart<Number, String> bc =
                 new StackedBarChart<>(xAxis, yAxis);
@@ -412,6 +414,7 @@ public class SchedulingApp extends Application {
 
         Label processesLabel = new Label(pLabel);
         Label remainingBurstTimeLable = new Label(btLabel);
+        remainingBurstTimeLable.setAlignment(Pos.CENTER);
 
         ChartLegend chartLegend = new ChartLegend();
         chartLegend.setAlignment(Pos.CENTER);

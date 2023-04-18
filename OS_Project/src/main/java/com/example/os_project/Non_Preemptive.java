@@ -44,10 +44,10 @@ public class Non_Preemptive extends Algorithm {
             min = Integer.MAX_VALUE;
 
             for (int i=0; i < process.size(); i++){
-                flag = (algoType == "SJF Preemptive") ? (process.get(i).getBt() < min) : (process.get(i).getPriority() < min);
+                flag = (algoType == "SJF Non Preemptive") ? (process.get(i).getBt() < min) : (process.get(i).getPriority() < min);
 
                 if(process.get(i).getAr() <= current_time && flag){
-                    min = (algoType == "SJF Preemptive") ? (process.get(i).getBt()) : (process.get(i).getPriority());
+                    min = (algoType == "SJF Non Preemptive") ? (process.get(i).getBt()) : (process.get(i).getPriority());
                     process_ID = i;
                 }
             }
