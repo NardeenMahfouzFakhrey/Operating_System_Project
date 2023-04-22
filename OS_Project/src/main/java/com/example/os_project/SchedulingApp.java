@@ -9,6 +9,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -84,14 +85,14 @@ public class SchedulingApp extends Application {
 
         schedulers = new String[]{"FCFS","SJF Preemptive", "SJF Non Preemptive" , "Priority Preemptive","Priority Non Preemptive","Round Robin"};
         buttonOK=new Button("OK");
-        buttonOK.setStyle("-fx-padding: 10;-fx-font-size: 14px; -fx-font-weight: bold;");
+        buttonOK.setStyle("-fx-padding: 10;-fx-font-size: 15px; -fx-font-weight: bold;");
         buttonOK.setPrefWidth(100);
         FlowPane flowPane1 = new FlowPane(buttonOK);
         flowPane1.setAlignment(Pos.CENTER);
         labelScheduler = new Label("Scheduler Type");
-        labelScheduler.setFont(Font.font("Arial", FontWeight.BOLD,14));
+        labelScheduler.setFont(Font.font("Arial", FontWeight.BOLD,15));
         labelProcess = new Label("Number of processes");
-        labelProcess.setFont(Font.font("Arial",FontWeight.BOLD,14));
+        labelProcess.setFont(Font.font("Arial",FontWeight.BOLD,15));
         labelTitle = new Label("Scheduler");
         labelTitle.setTextFill(Color.DARKRED);
         labelTitle.setFont(Font.font("Verdana" , FontWeight.BOLD , FontPosture.ITALIC, 28));
@@ -107,11 +108,12 @@ public class SchedulingApp extends Application {
         vboxProcess.setSpacing(10);
         vboxProcess.setStyle("-fx-padding: 26;");
         HBox hbox = new HBox(vboxScheduler,vboxProcess);
+        hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(15);
         VBox vbox = new VBox(flowPane,hbox,flowPane1);
         vbox.setStyle("-fx-padding: 16;");
         vbox.setSpacing(10);
-        Scene scene = new Scene(vbox, 500, 300);
+        Scene scene = new Scene(vbox, 900, 600);      //500,300
         stage.setTitle("Scheduler Project");
         stage.setScene(scene);
         stage.show();
@@ -152,7 +154,7 @@ public class SchedulingApp extends Application {
     public void scene2(Stage stage){
 
         VBox vBoxProcess = new VBox();
-        VBox vBoxID = new VBox();
+        //VBox vBoxID = new VBox();
         VBox vBoxArrival = new VBox();
         VBox vBoxBurst = new VBox();
         HBox hBoxP = null;
@@ -169,20 +171,20 @@ public class SchedulingApp extends Application {
         vBoxProcess.setPrefWidth(70);
         vBoxProcess.setPrefWidth(70);
         Label labelProcess = new Label("Processes");
-        labelProcess.setFont(Font.font("Calibri",FontWeight.BOLD,14));
-        Label labelID = new Label("Process ID");
-        labelID.setFont(Font.font("Calibri",FontWeight.BOLD,14));
+        labelProcess.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+        //Label labelID = new Label("Process ID");
+        //labelID.setFont(Font.font("Calibri",FontWeight.BOLD,15));
         Label labelArrival = new Label("Arrival Time");
-        labelArrival.setFont(Font.font("Calibri",FontWeight.BOLD,14));
+        labelArrival.setFont(Font.font("Calibri",FontWeight.BOLD,15));
         Label labelBurst = new Label("Burst Time");
-        labelBurst.setFont(Font.font("Calibri",FontWeight.BOLD,14));
+        labelBurst.setFont(Font.font("Calibri",FontWeight.BOLD,15));
         vBoxProcess.getChildren().add(labelProcess);
-        vBoxID.getChildren().add(labelID);
+        //vBoxID.getChildren().add(labelID);
         vBoxArrival.getChildren().add(labelArrival);
         vBoxBurst.getChildren().add(labelBurst);
 
         nProcesses = Integer.parseInt(Processes);
-        TextField Ids[] = new TextField[nProcesses];
+        //TextField Ids[] = new TextField[nProcesses];
         TextField arrivalTimes[] = new TextField[nProcesses];
         TextField burstTimes[] = new TextField[nProcesses];
         TextField priorities[] = new TextField[nProcesses];
@@ -190,24 +192,25 @@ public class SchedulingApp extends Application {
 
         for(int i=0; i < nProcesses ; i++){
             Label label = new Label("Process" + Integer.toString(i+1));
-            label.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,14));
-            Ids[i] = new TextField();
-            Ids[i].setPrefWidth(45);
+            label.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
+            //Ids[i] = new TextField();
+            //Ids[i].setPrefWidth(45);
             arrivalTimes[i] = new TextField();
             arrivalTimes[i].setPrefWidth(45);
             burstTimes[i] = new TextField();
             burstTimes[i].setPrefWidth(45);
 
             vBoxProcess.getChildren().add(label);
-            vBoxID.getChildren().add(Ids[i]);
+            //vBoxID.getChildren().add(Ids[i]);
             vBoxArrival.getChildren().add(arrivalTimes[i]);
             vBoxBurst.getChildren().add(burstTimes[i]);
         }
-        hBoxP = new HBox(vBoxProcess, vBoxID, vBoxArrival, vBoxBurst);
+        hBoxP = new HBox(vBoxProcess, vBoxArrival, vBoxBurst);
+        hBoxP.setAlignment(Pos.CENTER);
 
         if (isPriority) {
             Label labelPriority = new Label("Priority");
-            labelPriority.setFont(Font.font("Calibri",FontWeight.BOLD,14));
+            labelPriority.setFont(Font.font("Calibri",FontWeight.BOLD,15));
             VBox vBoxPriority = new VBox(labelPriority);
             vBoxPriority.setPrefWidth(70);
             for(int i = 0; i < nProcesses; i++){
@@ -220,13 +223,14 @@ public class SchedulingApp extends Application {
         }
         else if (isQuantum){
             Label labelRR = new Label("Quantum Time");
-            labelRR.setFont(Font.font("Calibri",FontWeight.BOLD,14));
+            labelRR.setFont(Font.font("Calibri",FontWeight.BOLD,15));
             quatumTime.setPrefWidth(70);
             hBoxRR = new HBox(labelRR,quatumTime);
             hBoxRR.setSpacing(10);
+            hBoxRR.setAlignment(Pos.CENTER);
         }
 
-        vBoxID.setSpacing(15);
+        //vBoxID.setSpacing(15);
         vBoxArrival.setSpacing(15);
         vBoxBurst.setSpacing(15);
         vBoxProcess.setSpacing(22);
@@ -235,13 +239,15 @@ public class SchedulingApp extends Application {
         if(hBoxRR != null){
             VPane.getChildren().add(hBoxRR);
         }
+        //VPane.setAlignment(Pos.CENTER);
         ButtonRun = new Button("Run");
         ButtonRun.setPrefWidth(75);
         VPane.getChildren().add(ButtonRun);
         VPane.setSpacing(15);
-        VPane.setStyle("-fx-padding: 16;");
+        VPane.setStyle("-fx-padding: 20 230;"); //16
         ScrollPane sP = new ScrollPane(VPane);
-        Scene scene = new Scene(sP, 550, 400);
+
+        Scene scene = new Scene(sP, 900, 600);
         stage.setTitle("Scheduler Project");
         stage.setScene(scene);
         stage.show();
@@ -251,13 +257,14 @@ public class SchedulingApp extends Application {
             totalTime = 0;
             ps = new ArrayList<Process>();
             for(int i=0; i < nProcesses ; i++){
-                if(Ids[i]==null){
+                /*if(Ids[i]==null){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Error");
                     alert.setHeaderText("Enter process "+(i+1)+" ID.");
                     alert.showAndWait();
                     break;
-                } else if (arrivalTimes[i]==null) {
+                } else */
+                if (arrivalTimes[i]==null) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Error");
                     alert.setHeaderText("Enter process "+(i+1)+" Arrival Time.");
@@ -282,8 +289,8 @@ public class SchedulingApp extends Application {
                     alert.showAndWait();
                     break;
                 } else{
-                    int pid, ar, bt, priority=-1;
-                    if (!(Ids[i].getText().matches("-?\\d+"))) {
+                    int ar, bt, priority=-1;
+                    /*if (!(Ids[i].getText().matches("-?\\d+"))) {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Error");
                         alert.setHeaderText("Enter a Numerical value for process " + (i+1) + " ID.");
@@ -292,7 +299,7 @@ public class SchedulingApp extends Application {
                     } else{
                         pid = Integer.parseInt(Ids[i].getText());
                     }
-
+                    */
                     if (!(arrivalTimes[i].getText().matches("-?\\d+"))) {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Error");
@@ -331,15 +338,17 @@ public class SchedulingApp extends Application {
                             alert.setHeaderText("Enter a Numerical value for Quantum Time.");
                             alert.showAndWait();
                             break;
-                        }else{
+                        }
+                        else
+                        {
                             quantum = Integer.parseInt(quatumTime.getText());
                         }
                     }
 
                     if(isPriority){
-                        ps.add(i,new Process(pid, ar, bt, priority));
+                        ps.add(i,new Process((i+1), ar, bt, priority));
                     }else{
-                        ps.add(i,new Process(pid, ar, bt));
+                        ps.add(i,new Process((i+1), ar, bt));
                     }
                     totalTime += bt;
                     if(i == (nProcesses-1)){
@@ -354,16 +363,87 @@ public class SchedulingApp extends Application {
 
     public void scene3(Stage stage){
 
+
+        VBox vBoxProcess = new VBox();
+        VBox vBoxBurst = new VBox();
+        HBox hBoxP = null;
+        HBox hBoxRR = null;
+        Button ButtonAddProcess;
+
+        vBoxBurst.setPrefWidth(70);
+        vBoxProcess.setPrefWidth(70);
+        vBoxProcess.setPrefWidth(70);
+        Label labelProcess = new Label("Process");
+        labelProcess.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+        Label labelBurst = new Label("Burst Time");
+        labelBurst.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+        vBoxProcess.getChildren().add(labelProcess);
+        vBoxBurst.getChildren().add(labelBurst);
+
+        TextField burstTime = new TextField();
+        burstTime.setPrefWidth(45);
+
+
+
+        Label label = new Label("Process" + (nProcesses+1));
+        label.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
+        vBoxProcess.getChildren().add(label);
+        vBoxBurst.getChildren().add(burstTime);
+
+        hBoxP = new HBox(vBoxProcess, vBoxBurst);
+
+        if (isPriority) {
+            Label labelPriority = new Label("Priority");
+            labelPriority.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+            VBox vBoxPriority = new VBox(labelPriority);
+            vBoxPriority.setPrefWidth(70);
+            TextField priority = new TextField();
+            priority.setPrefWidth(45);
+            vBoxPriority.getChildren().add(priority);
+            vBoxPriority.setSpacing(15);
+            hBoxP.getChildren().add(vBoxPriority);
+        }
+
+        vBoxBurst.setSpacing(15);
+        vBoxProcess.setSpacing(22);
+        hBoxP.setSpacing(15);
+        VBox VPane = new VBox(hBoxP);
+        if(hBoxRR != null){
+            VPane.getChildren().add(hBoxRR);
+        }
+        ButtonAddProcess = new Button("Add Process");
+        ButtonAddProcess.setPrefWidth(150);
+        VPane.getChildren().add(ButtonAddProcess);
+        VPane.setSpacing(15);
+        VPane.setStyle("-fx-padding: 16;");
+
+
+        Button RestartButton = new Button("Restart");
+        //RestartButton.setStyle("-fx-padding: 10;-fx-font-size: 15px; -fx-font-weight: bold;");
+        RestartButton.setPrefWidth(150);
+
+        HBox hb = new HBox(VPane);
+        hb.setAlignment(Pos.CENTER);
+        hb.setSpacing(100);
+
+
+        //Button addProcessButton = new Button("Add Process");
+        //addProcessButton.setStyle("-fx-padding: 10;-fx-font-size: 15px; -fx-font-weight: bold;");
+        //addProcessButton.setPrefWidth(200);
+
+        //FlowPane ButtonFlowPane = new FlowPane(addProcessButton, RestartButton);
+        //ButtonFlowPane.setAlignment(Pos.CENTER);
+
         String[] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "BLACK"};
 
         String pLabel = new String("");
-        String btLabel = new String("");
+        Label remainingBurstTimeLable[] = new Label[nProcesses];
 
         for (int i = 0; i < nProcesses; i++) {
             Process p = ps.get(i);
             p.color = color[i];
             pLabel.concat("    P" + p.getPid());
-            btLabel.concat("     " + p.getBt());
+            remainingBurstTimeLable[i] = new Label(p.getBt()+"");
         }
 
         Algorithm algo = null;
@@ -409,25 +489,26 @@ public class SchedulingApp extends Application {
         yAxis.setTickLabelRotation(0);
         bc.setCategoryGap(150);
 
-        System.out.println(pLabel);
-        System.out.println(btLabel);
-
         Label processesLabel = new Label(pLabel);
-        Label remainingBurstTimeLable = new Label(btLabel);
-        remainingBurstTimeLable.setAlignment(Pos.CENTER);
 
         ChartLegend chartLegend = new ChartLegend();
+        chartLegend.addRow(1);
         chartLegend.setAlignment(Pos.CENTER);
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(bc, chartLegend, processesLabel, remainingBurstTimeLable);
+        vBox.getChildren().addAll(bc, chartLegend);
+        vBox.getChildren().add(hb);
 
         StackPane root = new StackPane();
         root.getChildren().add(vBox);
 
 
-        Scene scene = new Scene(root, 1300, 700);
+        Scene scene = new Scene(root, 900, 600);
+
         stage.setScene(scene);
+        //stage.setFullScreen(true);
+        //stage.setResizable(false);
+        //stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         stage.setTitle("Gantt Chart");
         stage.show();
 
@@ -450,8 +531,10 @@ public class SchedulingApp extends Application {
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.millis(1000), (ActionEvent actionEvent) -> {
 
-                    if(k == series.size()-1){
-                        timeline.stop();
+                    for (int i = 0; i < nProcesses; i++) {
+
+                        chartLegend.getChildren().remove(remainingBurstTimeLable[i]);
+
                     }
 
                     XYChart.Series my_s = series.get(k);
@@ -473,18 +556,78 @@ public class SchedulingApp extends Application {
                     b.getP().decrementRt(1);
 
 
-                    String s = "     ";
+                    String s = " ";
 
                     for (int i = 0; i < nProcesses; i++) {
+
                         s += ps.get(i).getRt();
-                        s += "      ";
-                        remainingBurstTimeLable.setText(s);
+                        remainingBurstTimeLable[i].setText(s);
+                        remainingBurstTimeLable[i].setAlignment(Pos.CENTER);
+                        chartLegend.add(remainingBurstTimeLable[i], i, 2);
+                        s = " ";
                     }
                 }));
 
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setCycleCount(totalTime);
+        //timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         bc.setAnimated(false);
+
+        Algorithm finalAlgo = algo;
+
+        timeline.setOnFinished(e -> {
+            Label equal1 = new Label(" = ");
+            Label equal2 = new Label(" = ");
+            equal1.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+            equal2.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+
+            Label labelAvgWT = new Label("Average Waiting Time");
+            Label AvgWT = new Label(Float.toString(finalAlgo.compute_avgwt()));
+            labelAvgWT.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+            AvgWT.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
+            Label labelAvgTA = new Label("Average Turn-Around Time");
+            Label AvgTA = new Label(Float.toString(finalAlgo.compute_avgta()));
+            labelAvgTA.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+            AvgTA.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
+
+            VBox varBox = new VBox(labelAvgWT, labelAvgTA);
+            varBox.setSpacing(10);
+            VBox eqBox = new VBox(equal1, equal2);
+            eqBox.setSpacing(10);
+            VBox valBox = new VBox(AvgWT, AvgTA);
+            valBox.setSpacing(10);
+
+            HBox hb2 = new HBox(varBox,eqBox,valBox);
+            hb2.setSpacing(10);
+
+            RestartButton.setAlignment(Pos.CENTER);
+            FlowPane fp = new FlowPane(hb2, RestartButton);
+            fp.setVgap(15);
+
+            VBox vb = new VBox(hb2,RestartButton);
+            vb.setStyle("-fx-padding: 16;");
+            vb.setSpacing(15);
+            hb.getChildren().set(0,vb);
+        });
+
+        RestartButton.setOnAction(e -> {
+            scheduler = null;
+            textProcess = null;
+            Processes = null;
+            ps = null;
+            ps2 = null;
+            bs = null;
+            r = 0;
+            k = 0;
+            data = null;
+
+            scene1(stage);
+        });
+
+        ButtonAddProcess.setOnAction(e -> {
+
+        });
+
 
     }
 
