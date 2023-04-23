@@ -479,8 +479,10 @@ public class SchedulingApp extends Application {
             avgWT = algo.compute_avgwt();
             avgTA = algo.compute_avgta();
         }
-
-
+        /*for(int i=0; i<bs.size();i++){
+            System.out.println("P"+bs.get(i).getP().getPid()+ " " + bs.get(i).getQt());
+        }
+        */
         Label equal1 = new Label(" = ");
         Label equal2 = new Label(" = ");
         equal1.setFont(Font.font("Calibri",FontWeight.BOLD,15));
@@ -562,7 +564,7 @@ public class SchedulingApp extends Application {
 
             for(int j=0; j<b.getQt(); j++){
                 XYChart.Series s = new XYChart.Series();
-                s.setName("P("+ b.getP().getPid()+ ")");
+                s.setName("P("+ b.getPid()+ ")");
                 s.getData().add(new XYChart.Data(0,""));
                 series.add(s);
                 bc.getData().add(s);
@@ -581,7 +583,7 @@ public class SchedulingApp extends Application {
                     }
 
                     XYChart.Series my_s = series.get(k);
-                    String name = "P("+bs.get(r).getP().getPid()+")";
+                    String name = "P("+bs.get(r).getPid()+")";
                     if( name.compareTo(my_s.getName()) != 0 )
                         r++;
                     k++;
@@ -591,12 +593,12 @@ public class SchedulingApp extends Application {
                     data.nodeProperty().addListener(new ChangeListener<Node>() {
                         @Override
                         public void changed(ObservableValue<? extends Node> ov, Node oldNode, Node newNode) {
-                            newNode.setStyle("-fx-bar-fill: " + b.getP().color + ";");
+                            newNode.setStyle("-fx-bar-fill: " + ps.get(b.getPid()-1).color + ";");
                         }
                     });
 
                     my_s.getData().set(0, data);
-                    b.getP().decrementRt(1);
+                    ps.get(b.getPid()-1).decrementRt(1);
 
 
                     String s = " ";
@@ -621,47 +623,6 @@ public class SchedulingApp extends Application {
         bc.setAnimated(false);
 
 
-
-
-
-
-       /* timeline.setOnFinished(e -> {
-            Label equal1 = new Label(" = ");
-            Label equal2 = new Label(" = ");
-            equal1.setFont(Font.font("Calibri",FontWeight.BOLD,15));
-            equal2.setFont(Font.font("Calibri",FontWeight.BOLD,15));
-
-            Label labelAvgWT = new Label("Average Waiting Time");
-            Label AvgWT = new Label(Float.toString(avgWT));
-            labelAvgWT.setFont(Font.font("Calibri",FontWeight.BOLD,15));
-            AvgWT.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
-            Label labelAvgTA = new Label("Average Turn-Around Time");
-            Label AvgTA = new Label(Float.toString(avgTA));
-            labelAvgTA.setFont(Font.font("Calibri",FontWeight.BOLD,15));
-            AvgTA.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
-
-
-
-            VBox varBox = new VBox(labelAvgWT, labelAvgTA);
-            varBox.setSpacing(10);
-            VBox eqBox = new VBox(equal1, equal2);
-            eqBox.setSpacing(10);
-            VBox valBox = new VBox(AvgWT, AvgTA);
-            valBox.setSpacing(10);
-
-            HBox hb2 = new HBox(varBox,eqBox,valBox);
-            hb2.setSpacing(10);
-
-            RestartButton.setAlignment(Pos.CENTER);
-            FlowPane fp = new FlowPane(hb2, RestartButton);
-            fp.setVgap(15);
-
-            VBox vb = new VBox(hb2,RestartButton);
-            vb.setStyle("-fx-padding: 16;");
-            vb.setSpacing(15);
-            hb.getChildren().add(vb);
-        });
-*/
         RestartButton.setOnAction(e -> {
             scheduler = null;
             textProcess = null;
@@ -749,21 +710,26 @@ public class SchedulingApp extends Application {
             AvgTA.setText(Float.toString(avgTA));
 
             for(int i=0; i<bs.size();i++){
-                System.out.println("P"+bs.get(i).getP().getPid()+ " " + bs.get(i).getQt());
+                System.out.println("P"+bs.get(i).getPid()+ " " + bs.get(i).getQt());
             }
 
             for(int i=0; i<bs.size(); i++){
                 Burst b = bs.get(i);
                 for(int j=0; j<b.getQt(); j++){
                     XYChart.Series s = new XYChart.Series();
-                    s.setName("P("+ b.getP().getPid()+ ")");
+                    s.setName("P("+ b.getPid()+ ")");
                     s.getData().add(new XYChart.Data(0,""));
                     series.add(s);
                     bc.getData().add(s);
                 }
             }
-            /*k = 0;
-            r = 0;*/
+            /*if(scheduler.equals("SJF Non Preemptive")||scheduler.equals("Priority Non Preemptive")){
+                k = 0;
+                r = 0;
+            }*/
+
+            /*if(scheduler.equals("Round Robin"))
+                r++;*/
             pLabel.concat("    P" + newProcess.getPid());
 
 
@@ -799,7 +765,6 @@ public class SchedulingApp extends Application {
         public static void main(String[] args) {
             launch(args);
         }
-
 
     }
 

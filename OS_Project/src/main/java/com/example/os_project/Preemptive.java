@@ -43,7 +43,7 @@ public class Preemptive extends Algorithm {
                 }
             }
 
-            b = new Burst(process.get(process_ID),1);
+            b = new Burst(process.get(process_ID).getPid(),1);
             burst.add(b);
             current_time = current_time + 1;
             rt.set(process_ID,rt.get(process_ID) - 1);
@@ -58,16 +58,16 @@ public class Preemptive extends Algorithm {
         }
 
         for (int i=0 ; i<burst.size() ; i++ ){
-            int cur = burst.get(i).getP().getPid();
+            int cur = burst.get(i).getPid();
             for(int j=i+1 ; j<burst.size() ; j++){
-                if (cur == burst.get(j).getP().getPid() ){
+                if (cur == burst.get(j).getPid() ){
                     count = count + 1;
                     i=i+1;
                     if (j == burst.size()-1){
-                        result.add(new Burst(burst.get(i).getP(),count));
+                        result.add(new Burst(burst.get(i).getPid(),count));
                     }
                 }else {
-                    result.add(new Burst(burst.get(i).getP(),count));
+                    result.add(new Burst(burst.get(i).getPid(),count));
                     count = 1;
                     break;
                 }

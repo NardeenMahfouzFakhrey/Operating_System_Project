@@ -4,15 +4,20 @@ import java.util.ArrayList;
 
 public class Non_Preemptive extends Algorithm {
     ArrayList<Burst> burst = new ArrayList<Burst>();
-    ArrayList<Process> process;
+    ArrayList<Process> process=new ArrayList<>();
     int number_of_process;
     float avg_waiting_time = 0;
     float avg_turnaround_time = 0;
 
     public Non_Preemptive(int pn, ArrayList<Process> ps) {
         super(pn, ps);
-        this.process= (ArrayList<Process>) ps.clone();
         this.number_of_process=pn;
+        for(int i=0;i<ps.size();i++){
+            this.process.add((Process) ps.get(i).clone());
+        }
+        for(int i=0 ; i <number_of_process ; i++) {
+            process.get(i).setRt(process.get(i).getBt());
+        }
     }
 
 
@@ -26,14 +31,14 @@ public class Non_Preemptive extends Algorithm {
 
         for (int i=0; i<number_of_process ;i++){
             if ( (process.get(i).getRt() < process.get(i).getBt()) && (process.get(i).getRt() != 0)){
-                burst.add(new Burst(process.get(i),process.get(i).getRt()));
+                burst.add(new Burst(process.get(i).getPid(),process.get(i).getRt()));
                 process.get(i).setRt(0);
 
             }
         }
 
 
-        for (int i=0; i<number_of_process ;i++){
+        for (int i=0; i<process.size() ;i++){
             if (process.get(i).getRt() == 0){
                 process.remove(process.get(i));
             }
@@ -52,7 +57,7 @@ public class Non_Preemptive extends Algorithm {
                 }
             }
 
-            b = new Burst(process.get(process_ID),process.get(process_ID).getBt());
+            b = new Burst(process.get(process_ID).getPid(),process.get(process_ID).getBt());
             burst.add(b);
             avg_waiting_time += current_time-process.get(process_ID).getAr();
             current_time = current_time + process.get(process_ID).getBt();

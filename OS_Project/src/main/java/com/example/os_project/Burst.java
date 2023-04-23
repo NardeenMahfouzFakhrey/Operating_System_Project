@@ -1,16 +1,16 @@
 package com.example.os_project;
 
 public class Burst {
-    private Process p;     //Process
+    private int pid;     //Process id
     private int qt;      //Quantum Time
 
-    public Burst(Process p, int qt){
-        this.p = p;
+    public Burst(int pid, int qt){
+        this.pid = pid;
         this.qt = qt;
     }
 
-    public Process getP() {
-        return p;
+    public int getPid() {
+        return pid;
     }
 
     public int getQt() {

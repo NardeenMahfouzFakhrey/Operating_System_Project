@@ -18,7 +18,12 @@ public class RoundRobin extends Algorithm {
             this.process.add((Process) ps.get(i).clone());
         }
         this.number_of_process=pn;
+
+        for(int i=0 ; i <number_of_process ; i++) {
+            process.get(i).setRt(process.get(i).getBt());
+        }
     }
+
 
     @Override
     public ArrayList<Burst> schedule(String algo_Type){
@@ -33,7 +38,7 @@ public class RoundRobin extends Algorithm {
                     if (process.get(i).getRt() >= quantumTime) {
 
                         process.get(i).setRt(process.get(i).getRt() - quantumTime);
-                        Burst b= new Burst(ps.get(i),quantumTime);
+                        Burst b= new Burst(process.get(i).getPid(),quantumTime);
                         burst.add(b);
 
                         if (process.get(i).getRt() == 0) {
@@ -45,7 +50,7 @@ public class RoundRobin extends Algorithm {
                     }
                     else {
                         actualQuantum = process.get(i).getRt();
-                        Burst b= new Burst(ps.get(i),actualQuantum);
+                        Burst b= new Burst(process.get(i).getPid(),actualQuantum);
                         burst.add(b);
 
                         avg_waiting_time += currentTime- process.get(i).getAr() - process.get(i).getBt()+actualQuantum;
@@ -65,7 +70,6 @@ public class RoundRobin extends Algorithm {
         }
         return burst;
     }
-
     @Override
     public float compute_avgwt() {
         return avg_waiting_time/number_of_process;
@@ -73,7 +77,7 @@ public class RoundRobin extends Algorithm {
 
     @Override
     public float compute_avgta() {
+
         return avg_turnaround_time/number_of_process;
     }
 }
-
