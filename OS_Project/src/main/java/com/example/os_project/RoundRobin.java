@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class RoundRobin extends Algorithm {
 
     ArrayList<Burst> burst = new ArrayList<Burst>();
-    ArrayList<Process> process;
+    ArrayList<Process> process=new ArrayList<>();
     int number_of_process;
     float avg_waiting_time = 0;
     float avg_turnaround_time = 0;
@@ -14,7 +14,9 @@ public class RoundRobin extends Algorithm {
     public RoundRobin(int pn, ArrayList<Process> ps, int quantumTime) {
         super(pn, ps);
         this.quantumTime=quantumTime;
-        this.process= (ArrayList<Process>) ps.clone();
+        for(int i=0 ; i< ps.size() ; i++) {
+            this.process.add((Process) ps.get(i).clone());
+        }
         this.number_of_process=pn;
     }
 
@@ -31,9 +33,10 @@ public class RoundRobin extends Algorithm {
                     if (process.get(i).getRt() >= quantumTime) {
 
                         process.get(i).setRt(process.get(i).getRt() - quantumTime);
-                        burst.add(new Burst(process.get(i), quantumTime));
-                        if (process.get(i).getRt() == 0) {
+                        Burst b= new Burst(ps.get(i),quantumTime);
+                        burst.add(b);
 
+                        if (process.get(i).getRt() == 0) {
                             avg_waiting_time += currentTime- process.get(i).getAr() - process.get(i).getBt()+quantumTime;
                             avg_turnaround_time+=currentTime-process.get(i).getAr()+quantumTime;
                             process.remove(process.get(i));
@@ -42,7 +45,8 @@ public class RoundRobin extends Algorithm {
                     }
                     else {
                         actualQuantum = process.get(i).getRt();
-                        burst.add(new Burst(process.get(i), actualQuantum));
+                        Burst b= new Burst(ps.get(i),actualQuantum);
+                        burst.add(b);
 
                         avg_waiting_time += currentTime- process.get(i).getAr() - process.get(i).getBt()+actualQuantum;
                         avg_turnaround_time+=currentTime-process.get(i).getAr()+actualQuantum;

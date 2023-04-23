@@ -18,29 +18,34 @@ public class FCFS extends  Algorithm{
 
     @Override
     public ArrayList<Burst> schedule(String algo_Type){
+
         int current_time=0;
         for (int i=0 ; i<number_of_process ; i++) {
             Process p = getFirstArrival(process);
             Burst b = new Burst(p,p.getBt());
-            burst.add(b);
-            avg_waiting_time += current_time-p.getAr();
+            p.setWt( current_time-p.getAr());
             current_time = current_time + p.getBt();
-            avg_turnaround_time += current_time-p.getAr();
+            p.setTa(current_time-p.getAr());
+            burst.add(b);
             process.remove(p);
         }
-        avg_turnaround_time=avg_turnaround_time/number_of_process;
-        avg_waiting_time=avg_waiting_time/number_of_process;
         return burst;
     }
 
     @Override
     public float compute_avgwt() {
-        return avg_waiting_time;
+     for(int i=0 ; i < number_of_process ; i++) {
+         avg_waiting_time+=burst.get(i).getP().getWt();
+     }
+        return avg_waiting_time/number_of_process;
     }
 
     @Override
     public float compute_avgta() {
-        return avg_turnaround_time;
+        for(int i=0 ; i < number_of_process ; i++) {
+            avg_turnaround_time+=burst.get(i).getP().getTa();
+        }
+        return avg_turnaround_time/number_of_process;
     }
 
     public Process getFirstArrival(ArrayList<Process> processes) {
