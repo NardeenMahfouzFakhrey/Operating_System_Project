@@ -692,6 +692,7 @@ public class SchedulingApp extends Application {
             ps.add(newProcess);
             remainingBurstTimeLable.add(new Label(""));
 
+            chartLegend.addColumn(nProcesses, createChartLegend(ps.get(nProcesses).color), new Label("P" + ps.get(nProcesses).getPid()));
 
             nProcesses++;
             totalTime+=bt;
@@ -769,6 +770,15 @@ public class SchedulingApp extends Application {
 
     }
 
+    private Node createChartLegend(String fillStyle) {
+        Shape symbol = new Rectangle(15, 15, 15, 15);
+        symbol.setStyle("-fx-fill: " + fillStyle);
+        //symbol.setStroke(Color.BLACK);
+        symbol.setStrokeWidth(2);
+
+        return symbol;
+    }
+
     class ChartLegend extends GridPane {
         ChartLegend() {
             setHgap(10);
@@ -778,14 +788,6 @@ public class SchedulingApp extends Application {
             }
         }
 
-        private Node createChartLegend(String fillStyle) {
-            Shape symbol = new Rectangle(15, 15, 15, 15);
-            symbol.setStyle("-fx-fill: " + fillStyle);
-            //symbol.setStroke(Color.BLACK);
-            symbol.setStrokeWidth(2);
-
-            return symbol;
-        }
 
         public static void main(String[] args) {
             launch(args);
