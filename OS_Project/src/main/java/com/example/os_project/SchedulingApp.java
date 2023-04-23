@@ -45,6 +45,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SchedulingApp extends Application {
 
@@ -58,9 +60,11 @@ public class SchedulingApp extends Application {
     Boolean isQuantum;
     ArrayList<Burst> bs = null;
     int totalTime;
-
+    Process newProcess;
     int r = 0,k = 0;
     XYChart.Data data;
+    float avgWT = 0;
+    float avgTA = 0;
 
 
     public static void main(String[] args) {
@@ -370,6 +374,7 @@ public class SchedulingApp extends Application {
         HBox hBoxRR = null;
         Button ButtonAddProcess;
 
+
         vBoxBurst.setPrefWidth(70);
         vBoxProcess.setPrefWidth(70);
         vBoxProcess.setPrefWidth(70);
@@ -382,7 +387,7 @@ public class SchedulingApp extends Application {
 
         TextField burstTime = new TextField();
         burstTime.setPrefWidth(45);
-
+        TextField priority = new TextField();
 
 
         Label label = new Label("Process" + (nProcesses+1));
@@ -397,7 +402,7 @@ public class SchedulingApp extends Application {
             labelPriority.setFont(Font.font("Calibri",FontWeight.BOLD,15));
             VBox vBoxPriority = new VBox(labelPriority);
             vBoxPriority.setPrefWidth(70);
-            TextField priority = new TextField();
+
             priority.setPrefWidth(45);
             vBoxPriority.getChildren().add(priority);
             vBoxPriority.setSpacing(15);
@@ -437,13 +442,13 @@ public class SchedulingApp extends Application {
         String[] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "BLACK"};
 
         String pLabel = new String("");
-        Label remainingBurstTimeLable[] = new Label[nProcesses];
+        final ArrayList<Label> remainingBurstTimeLable = new ArrayList<>(nProcesses);
 
         for (int i = 0; i < nProcesses; i++) {
             Process p = ps.get(i);
             p.color = color[i];
             pLabel.concat("    P" + p.getPid());
-            remainingBurstTimeLable[i] = new Label(p.getBt()+"");
+            remainingBurstTimeLable.add(new Label(p.getBt()+""));
         }
 
         Algorithm algo = null;
@@ -471,7 +476,45 @@ public class SchedulingApp extends Application {
 
         if(algo != null){
             bs = algo.schedule(scheduler);
+            avgWT = algo.compute_avgwt();
+            avgTA = algo.compute_avgta();
         }
+
+
+        Label equal1 = new Label(" = ");
+        Label equal2 = new Label(" = ");
+        equal1.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+        equal2.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+
+        Label labelAvgWT = new Label("Average Waiting Time");
+        Label AvgWT = new Label(Float.toString(avgWT));
+        labelAvgWT.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+        AvgWT.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
+        Label labelAvgTA = new Label("Average Turn-Around Time");
+        Label AvgTA = new Label(Float.toString(avgTA));
+        labelAvgTA.setFont(Font.font("Calibri",FontWeight.BOLD,15));
+        AvgTA.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
+
+
+
+        VBox varBox = new VBox(labelAvgWT, labelAvgTA);
+        varBox.setSpacing(10);
+        VBox eqBox = new VBox(equal1, equal2);
+        eqBox.setSpacing(10);
+        VBox valBox = new VBox(AvgWT, AvgTA);
+        valBox.setSpacing(10);
+
+        HBox hb2 = new HBox(varBox,eqBox,valBox);
+        hb2.setSpacing(10);
+
+        RestartButton.setAlignment(Pos.CENTER);
+        FlowPane fp = new FlowPane(hb2, RestartButton);
+        fp.setVgap(15);
+
+        VBox vb = new VBox(hb2,RestartButton);
+        vb.setStyle("-fx-padding: 16;");
+        vb.setSpacing(15);
+        hb.getChildren().add(vb);
 
         Boolean done = false;
         int time = 1000;
@@ -533,7 +576,7 @@ public class SchedulingApp extends Application {
 
                     for (int i = 0; i < nProcesses; i++) {
 
-                        chartLegend.getChildren().remove(remainingBurstTimeLable[i]);
+                        chartLegend.getChildren().remove(remainingBurstTimeLable.get(i));
 
                     }
 
@@ -561,34 +604,43 @@ public class SchedulingApp extends Application {
                     for (int i = 0; i < nProcesses; i++) {
 
                         s += ps.get(i).getRt();
-                        remainingBurstTimeLable[i].setText(s);
-                        remainingBurstTimeLable[i].setAlignment(Pos.CENTER);
-                        chartLegend.add(remainingBurstTimeLable[i], i, 2);
+                        remainingBurstTimeLable.get(i).setText(s);
+                        remainingBurstTimeLable.get(i).setAlignment(Pos.CENTER);
+                        chartLegend.add(remainingBurstTimeLable.get(i), i, 2);
                         s = " ";
+                    }
+
+                    if (k == series.size()) {
+                        timeline.stop();
                     }
                 }));
 
-        timeline.setCycleCount(totalTime);
-        //timeline.setCycleCount(Timeline.INDEFINITE);
+
+        timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         bc.setAnimated(false);
 
-        Algorithm finalAlgo = algo;
 
-        timeline.setOnFinished(e -> {
+
+
+
+
+       /* timeline.setOnFinished(e -> {
             Label equal1 = new Label(" = ");
             Label equal2 = new Label(" = ");
             equal1.setFont(Font.font("Calibri",FontWeight.BOLD,15));
             equal2.setFont(Font.font("Calibri",FontWeight.BOLD,15));
 
             Label labelAvgWT = new Label("Average Waiting Time");
-            Label AvgWT = new Label(Float.toString(finalAlgo.compute_avgwt()));
+            Label AvgWT = new Label(Float.toString(avgWT));
             labelAvgWT.setFont(Font.font("Calibri",FontWeight.BOLD,15));
             AvgWT.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
             Label labelAvgTA = new Label("Average Turn-Around Time");
-            Label AvgTA = new Label(Float.toString(finalAlgo.compute_avgta()));
+            Label AvgTA = new Label(Float.toString(avgTA));
             labelAvgTA.setFont(Font.font("Calibri",FontWeight.BOLD,15));
             AvgTA.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
+
+
 
             VBox varBox = new VBox(labelAvgWT, labelAvgTA);
             varBox.setSpacing(10);
@@ -607,9 +659,9 @@ public class SchedulingApp extends Application {
             VBox vb = new VBox(hb2,RestartButton);
             vb.setStyle("-fx-padding: 16;");
             vb.setSpacing(15);
-            hb.getChildren().set(0,vb);
+            hb.getChildren().add(vb);
         });
-
+*/
         RestartButton.setOnAction(e -> {
             scheduler = null;
             textProcess = null;
@@ -625,6 +677,92 @@ public class SchedulingApp extends Application {
         });
 
         ButtonAddProcess.setOnAction(e -> {
+            Algorithm finalAlgo = null;
+
+            timeline.pause();
+
+            int ar = k;
+            int bt = Integer.parseInt(burstTime.getText());
+            int p = 0;
+            if(isPriority){
+                p = Integer.parseInt(priority.getText());
+            }
+            newProcess = new Process(nProcesses+1, ar, bt, p);
+            newProcess.color = color[nProcesses];
+            ps.add(newProcess);
+            remainingBurstTimeLable.add(new Label(""));
+
+
+            nProcesses++;
+            totalTime+=bt;
+
+
+            for(int i=0; i<ps.size();i++){
+                System.out.println("P"+ps.get(i).getPid()+ " " + ps.get(i).getAr() +" "+ ps.get(i).getBt() +" "+ps.get(i).getRt());
+            }
+
+            for(int i=0; i<bs.size(); i++){
+                Burst b = bs.get(i);
+                for(int j=0; j<b.getQt(); j++){
+                    series.remove(0);
+                    //bc.getData().remove(0);
+                }
+            }
+
+            switch(scheduler){
+                case "FCFS":
+                    finalAlgo = new FCFS(nProcesses,ps);
+                    break;
+                case "Round Robin":
+                    finalAlgo = new RoundRobin(ps.size(), ps, quantum);
+                    break;
+                case "SJF Preemptive":
+                    finalAlgo = new Preemptive(ps.size(), ps);
+                    break;
+                case "SJF Non Preemptive":
+                    finalAlgo = new Non_Preemptive(ps.size(), ps);
+                    break;
+                case "Priority Preemptive":
+                    finalAlgo = new Preemptive(ps.size(), ps);
+                    break;
+                case "Priority Non Preemptive":
+                    finalAlgo = new Non_Preemptive(ps.size(), ps);
+                    break;
+                default:
+                    finalAlgo = new FCFS(nProcesses,ps);
+                    break;
+            }
+
+            bs = finalAlgo.schedule(scheduler);
+            avgWT = finalAlgo.compute_avgwt();
+            avgTA = finalAlgo.compute_avgta();
+
+            AvgWT.setText(Float.toString(avgWT));
+            AvgTA.setText(Float.toString(avgTA));
+
+            for(int i=0; i<bs.size();i++){
+                System.out.println("P"+bs.get(i).getP().getPid()+ " " + bs.get(i).getQt());
+            }
+
+            for(int i=0; i<bs.size(); i++){
+                Burst b = bs.get(i);
+                for(int j=0; j<b.getQt(); j++){
+                    XYChart.Series s = new XYChart.Series();
+                    s.setName("P("+ b.getP().getPid()+ ")");
+                    s.getData().add(new XYChart.Data(0,""));
+                    series.add(s);
+                    bc.getData().add(s);
+                }
+            }
+            /*k = 0;
+            r = 0;*/
+            pLabel.concat("    P" + newProcess.getPid());
+
+
+            //timeline.setCycleCount(totalTime);
+
+            xAxis.setUpperBound(totalTime);
+            timeline.play();
 
         });
 
@@ -655,4 +793,6 @@ public class SchedulingApp extends Application {
 
 
     }
+
+
 }

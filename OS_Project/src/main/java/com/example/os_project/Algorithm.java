@@ -66,4 +66,8 @@ public abstract class Algorithm {
     public int getPn() {
         return pn;
     }
+
+    public void setPn(int pn) {
+        this.pn = pn;
+    }
 }
