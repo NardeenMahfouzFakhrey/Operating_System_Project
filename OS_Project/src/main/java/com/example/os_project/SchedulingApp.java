@@ -693,8 +693,15 @@ public class SchedulingApp extends Application {
             remainingBurstTimeLable.add(new Label(""));
 
             chartLegend.addColumn(nProcesses, createChartLegend(ps.get(nProcesses).color), new Label("P" + ps.get(nProcesses).getPid()));
+            String str = ps.get(nProcesses).getRt()+"";
+            remainingBurstTimeLable.get(nProcesses).setText(str);
+            remainingBurstTimeLable.get(nProcesses).setAlignment(Pos.CENTER);
+            chartLegend.add(remainingBurstTimeLable.get(nProcesses), nProcesses, 2);
+
 
             nProcesses++;
+            vBoxProcess.getChildren().set(1,new Label("Process" + (nProcesses+1)));
+
             totalTime+=bt;
 
 
