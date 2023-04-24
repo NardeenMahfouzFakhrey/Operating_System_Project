@@ -356,7 +356,7 @@ public class SchedulingApp extends Application {
                     }
                     if(ar>totalTime)
                     {
-                        totalTime += (ar-totalTime-1);
+                        totalTime += (ar-totalTime);
                     }
                     totalTime += bt;
                     if(i == (nProcesses-1)){
@@ -597,7 +597,7 @@ public class SchedulingApp extends Application {
                         @Override
                         public void changed(ObservableValue<? extends Node> ov, Node oldNode, Node newNode) {
                             if(my_s.getName().compareTo("EMPTY") == 0){
-                                newNode.setStyle("-fx-bar-fill: " + "WHITE" + ";");
+                                newNode.setStyle("-fx-bar-fill: " + "#FFFFFF00" + ";");
                             }
                             else{
                                 newNode.setStyle("-fx-bar-fill: " + ps.get(b.getPid()-1).color + ";");
