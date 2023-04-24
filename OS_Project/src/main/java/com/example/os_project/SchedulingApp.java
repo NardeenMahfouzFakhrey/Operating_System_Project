@@ -354,6 +354,10 @@ public class SchedulingApp extends Application {
                     }else{
                         ps.add(i,new Process((i+1), ar, bt));
                     }
+                    if(ar>totalTime)
+                    {
+                        totalTime += (ar-totalTime-1);
+                    }
                     totalTime += bt;
                     if(i == (nProcesses-1)){
                         System.out.println(ps.size());
@@ -431,15 +435,7 @@ public class SchedulingApp extends Application {
         hb.setAlignment(Pos.CENTER);
         hb.setSpacing(100);
 
-
-        //Button addProcessButton = new Button("Add Process");
-        //addProcessButton.setStyle("-fx-padding: 10;-fx-font-size: 15px; -fx-font-weight: bold;");
-        //addProcessButton.setPrefWidth(200);
-
-        //FlowPane ButtonFlowPane = new FlowPane(addProcessButton, RestartButton);
-        //ButtonFlowPane.setAlignment(Pos.CENTER);
-
-        String[] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "BLACK"};
+        String[] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "PURPLE", "PINK", "SKYBLUE", "BLACK"};
 
         String pLabel = new String("");
         final ArrayList<Label> remainingBurstTimeLable = new ArrayList<>(nProcesses);
@@ -534,8 +530,6 @@ public class SchedulingApp extends Application {
         yAxis.setTickLabelRotation(0);
         bc.setCategoryGap(150);
 
-        Label processesLabel = new Label(pLabel);
-
         ChartLegend chartLegend = new ChartLegend();
         chartLegend.addRow(1);
         chartLegend.setAlignment(Pos.CENTER);
@@ -558,10 +552,19 @@ public class SchedulingApp extends Application {
         stage.show();
 
         ArrayList<XYChart.Series> series = new ArrayList<>();
-
+        int tt=0;
         for(int i=0; i<bs.size(); i++){
             Burst b = bs.get(i);
-
+            Process p = ps.get(b.getPid()-1);
+            for(int j = tt; j<p.getAr(); j++){
+                tt += (p.getAr()-tt);
+                XYChart.Series s = new XYChart.Series();
+                s.setName("EMPTY");
+                s.getData().add(new XYChart.Data(0,""));
+                series.add(s);
+                bc.getData().add(s);
+            }
+            tt += p.getBt();
             for(int j=0; j<b.getQt(); j++){
                 XYChart.Series s = new XYChart.Series();
                 s.setName("P("+ b.getPid()+ ")");
@@ -584,27 +587,33 @@ public class SchedulingApp extends Application {
 
                     XYChart.Series my_s = series.get(k);
                     String name = "P("+bs.get(r).getPid()+")";
-                    if( name.compareTo(my_s.getName()) != 0 )
+                    if( (name.compareTo(my_s.getName()) != 0 )&&(my_s.getName().compareTo("EMPTY")!=0))
                         r++;
                     k++;
-                    Burst b = bs.get(r);
 
+                    Burst b = bs.get(r);
                     data = new XYChart.Data<>(1, "");
                     data.nodeProperty().addListener(new ChangeListener<Node>() {
                         @Override
                         public void changed(ObservableValue<? extends Node> ov, Node oldNode, Node newNode) {
-                            newNode.setStyle("-fx-bar-fill: " + ps.get(b.getPid()-1).color + ";");
+                            if(my_s.getName().compareTo("EMPTY") == 0){
+                                newNode.setStyle("-fx-bar-fill: " + "WHITE" + ";");
+                            }
+                            else{
+                                newNode.setStyle("-fx-bar-fill: " + ps.get(b.getPid()-1).color + ";");
+                            }
+
                         }
                     });
 
                     my_s.getData().set(0, data);
-                    ps.get(b.getPid()-1).decrementRt(1);
 
+                    if(my_s.getName().compareTo("EMPTY")!=0){
+                        ps.get(b.getPid()-1).decrementRt(1);
+                    }
 
                     String s = " ";
-
                     for (int i = 0; i < nProcesses; i++) {
-
                         s += ps.get(i).getRt();
                         remainingBurstTimeLable.get(i).setText(s);
                         remainingBurstTimeLable.get(i).setAlignment(Pos.CENTER);
@@ -674,7 +683,6 @@ public class SchedulingApp extends Application {
                 Burst b = bs.get(i);
                 for(int j=0; j<b.getQt(); j++){
                     series.remove(0);
-                    //bc.getData().remove(0);
                 }
             }
 
@@ -723,24 +731,11 @@ public class SchedulingApp extends Application {
                     bc.getData().add(s);
                 }
             }
-            /*if(scheduler.equals("SJF Non Preemptive")||scheduler.equals("Priority Non Preemptive")){
-                k = 0;
-                r = 0;
-            }*/
 
-            /*if(scheduler.equals("Round Robin"))
-                r++;*/
             pLabel.concat("    P" + newProcess.getPid());
-
-
-            //timeline.setCycleCount(totalTime);
-
             xAxis.setUpperBound(totalTime);
             timeline.play();
-
         });
-
-
     }
 
     private Node createChartLegend(String fillStyle) {
