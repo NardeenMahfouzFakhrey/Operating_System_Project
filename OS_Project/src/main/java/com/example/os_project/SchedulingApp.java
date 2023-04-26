@@ -502,7 +502,7 @@ public class SchedulingApp extends Application {
         VBox valBox = new VBox(AvgWT, AvgTA);
         valBox.setSpacing(10);
 
-        HBox hb2 = new HBox(varBox,eqBox,valBox);
+        HBox hb2 = new HBox(varBox,eqBox);  //,valBox
         hb2.setSpacing(10);
 
         RestartButton.setAlignment(Pos.CENTER);
@@ -622,6 +622,7 @@ public class SchedulingApp extends Application {
                     }
 
                     if (k == series.size()) {
+                        hb2.getChildren().add(valBox);
                         timeline.stop();
                     }
                 }));
