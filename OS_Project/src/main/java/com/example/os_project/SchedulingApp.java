@@ -9,44 +9,26 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-//import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableListValue;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.chart.*;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class SchedulingApp extends Application {
 
@@ -65,24 +47,19 @@ public class SchedulingApp extends Application {
     XYChart.Data data;
     float avgWT = 0;
     float avgTA = 0;
-
-
     public static void main(String[] args) {
         launch(args);
     }
-
     @Override
     public void start(Stage stage) {
         scene1(stage);
     }
-
     public void scene1(Stage stage){
 
         Button buttonOK;
         Label labelScheduler;
         Label labelProcess;
         Label labelTitle;
-
         ComboBox comboBoxSchedulers;
         String [] schedulers;
         FlowPane flowPane;
@@ -158,10 +135,9 @@ public class SchedulingApp extends Application {
     public void scene2(Stage stage){
 
         VBox vBoxProcess = new VBox();
-        //VBox vBoxID = new VBox();
         VBox vBoxArrival = new VBox();
         VBox vBoxBurst = new VBox();
-        HBox hBoxP = null;
+        HBox hBoxP;
         HBox hBoxRR = null;
         Button ButtonRun;
 
@@ -176,19 +152,15 @@ public class SchedulingApp extends Application {
         vBoxProcess.setPrefWidth(70);
         Label labelProcess = new Label("Processes");
         labelProcess.setFont(Font.font("Calibri",FontWeight.BOLD,15));
-        //Label labelID = new Label("Process ID");
-        //labelID.setFont(Font.font("Calibri",FontWeight.BOLD,15));
         Label labelArrival = new Label("Arrival Time");
         labelArrival.setFont(Font.font("Calibri",FontWeight.BOLD,15));
         Label labelBurst = new Label("Burst Time");
         labelBurst.setFont(Font.font("Calibri",FontWeight.BOLD,15));
         vBoxProcess.getChildren().add(labelProcess);
-        //vBoxID.getChildren().add(labelID);
         vBoxArrival.getChildren().add(labelArrival);
         vBoxBurst.getChildren().add(labelBurst);
 
         nProcesses = Integer.parseInt(Processes);
-        //TextField Ids[] = new TextField[nProcesses];
         TextField arrivalTimes[] = new TextField[nProcesses];
         TextField burstTimes[] = new TextField[nProcesses];
         TextField priorities[] = new TextField[nProcesses];
@@ -197,15 +169,12 @@ public class SchedulingApp extends Application {
         for(int i=0; i < nProcesses ; i++){
             Label label = new Label("Process" + Integer.toString(i+1));
             label.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
-            //Ids[i] = new TextField();
-            //Ids[i].setPrefWidth(45);
             arrivalTimes[i] = new TextField();
             arrivalTimes[i].setPrefWidth(45);
             burstTimes[i] = new TextField();
             burstTimes[i].setPrefWidth(45);
 
             vBoxProcess.getChildren().add(label);
-            //vBoxID.getChildren().add(Ids[i]);
             vBoxArrival.getChildren().add(arrivalTimes[i]);
             vBoxBurst.getChildren().add(burstTimes[i]);
         }
@@ -234,7 +203,6 @@ public class SchedulingApp extends Application {
             hBoxRR.setAlignment(Pos.CENTER);
         }
 
-        //vBoxID.setSpacing(15);
         vBoxArrival.setSpacing(15);
         vBoxBurst.setSpacing(15);
         vBoxProcess.setSpacing(22);
@@ -243,7 +211,6 @@ public class SchedulingApp extends Application {
         if(hBoxRR != null){
             VPane.getChildren().add(hBoxRR);
         }
-        //VPane.setAlignment(Pos.CENTER);
         ButtonRun = new Button("Run");
         ButtonRun.setPrefWidth(75);
         VPane.getChildren().add(ButtonRun);
@@ -256,18 +223,10 @@ public class SchedulingApp extends Application {
         stage.setScene(scene);
         stage.show();
 
-
         ButtonRun.setOnAction(e -> {
             totalTime = 0;
             ps = new ArrayList<Process>();
             for(int i=0; i < nProcesses ; i++){
-                /*if(Ids[i]==null){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Enter process "+(i+1)+" ID.");
-                    alert.showAndWait();
-                    break;
-                } else */
                 if (arrivalTimes[i]==null) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Error");
@@ -293,17 +252,7 @@ public class SchedulingApp extends Application {
                     alert.showAndWait();
                     break;
                 } else{
-                    int ar, bt, priority=-1;
-                    /*if (!(Ids[i].getText().matches("-?\\d+"))) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Error");
-                        alert.setHeaderText("Enter a Numerical value for process " + (i+1) + " ID.");
-                        alert.showAndWait();
-                        break;
-                    } else{
-                        pid = Integer.parseInt(Ids[i].getText());
-                    }
-                    */
+                    int ar, bt, priority = -1;
                     if (!(arrivalTimes[i].getText().matches("-?\\d+"))) {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Error");
@@ -371,13 +320,11 @@ public class SchedulingApp extends Application {
 
     public void scene3(Stage stage){
 
-
         VBox vBoxProcess = new VBox();
         VBox vBoxBurst = new VBox();
         HBox hBoxP = null;
         HBox hBoxRR = null;
         Button ButtonAddProcess;
-
 
         vBoxBurst.setPrefWidth(70);
         vBoxProcess.setPrefWidth(70);
@@ -388,17 +335,13 @@ public class SchedulingApp extends Application {
         labelBurst.setFont(Font.font("Calibri",FontWeight.BOLD,15));
         vBoxProcess.getChildren().add(labelProcess);
         vBoxBurst.getChildren().add(labelBurst);
-
         TextField burstTime = new TextField();
         burstTime.setPrefWidth(45);
         TextField priority = new TextField();
-
-
         Label label = new Label("Process" + (nProcesses+1));
         label.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
         vBoxProcess.getChildren().add(label);
         vBoxBurst.getChildren().add(burstTime);
-
         hBoxP = new HBox(vBoxProcess, vBoxBurst);
 
         if (isPriority) {
@@ -406,7 +349,6 @@ public class SchedulingApp extends Application {
             labelPriority.setFont(Font.font("Calibri",FontWeight.BOLD,15));
             VBox vBoxPriority = new VBox(labelPriority);
             vBoxPriority.setPrefWidth(70);
-
             priority.setPrefWidth(45);
             vBoxPriority.getChildren().add(priority);
             vBoxPriority.setSpacing(15);
@@ -425,17 +367,14 @@ public class SchedulingApp extends Application {
         VPane.getChildren().add(ButtonAddProcess);
         VPane.setSpacing(15);
         VPane.setStyle("-fx-padding: 16;");
-
-
         Button RestartButton = new Button("Restart");
-        //RestartButton.setStyle("-fx-padding: 10;-fx-font-size: 15px; -fx-font-weight: bold;");
         RestartButton.setPrefWidth(150);
-
         HBox hb = new HBox(VPane);
         hb.setAlignment(Pos.CENTER);
         hb.setSpacing(100);
 
-        String[] color = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "PURPLE", "PINK", "SKYBLUE", "BLACK"};
+        String[] color = {"RED", "BLUE", "GREEN", "CYAN", "ORANGE", "MAGENTA", "PURPLE", "PINK", "SKYBLUE",
+                          "BLACK", "SILVER", "YELLOWGREEN", "SANDYBROWN", "PERU", "WHEAT", "SALMON"};
 
         String pLabel = new String("");
         final ArrayList<Label> remainingBurstTimeLable = new ArrayList<>(nProcesses);
@@ -448,7 +387,6 @@ public class SchedulingApp extends Application {
         }
 
         Algorithm algo = null;
-
         switch(scheduler){
             case "FCFS":
                 algo = new FCFS(nProcesses,ps);
@@ -469,21 +407,16 @@ public class SchedulingApp extends Application {
                 algo = new Non_Preemptive(ps.size(), ps);
                 break;
         }
-
         if(algo != null){
             bs = algo.schedule(scheduler);
             avgWT = algo.compute_avgwt();
             avgTA = algo.compute_avgta();
         }
-        /*for(int i=0; i<bs.size();i++){
-            System.out.println("P"+bs.get(i).getP().getPid()+ " " + bs.get(i).getQt());
-        }
-        */
+
         Label equal1 = new Label(" = ");
         Label equal2 = new Label(" = ");
         equal1.setFont(Font.font("Calibri",FontWeight.BOLD,15));
         equal2.setFont(Font.font("Calibri",FontWeight.BOLD,15));
-
         Label labelAvgWT = new Label("Average Waiting Time");
         Label AvgWT = new Label(Float.toString(avgWT));
         labelAvgWT.setFont(Font.font("Calibri",FontWeight.BOLD,15));
@@ -492,35 +425,24 @@ public class SchedulingApp extends Application {
         Label AvgTA = new Label(Float.toString(avgTA));
         labelAvgTA.setFont(Font.font("Calibri",FontWeight.BOLD,15));
         AvgTA.setFont(Font.font("Calibri",FontWeight.SEMI_BOLD,15));
-
-
-
         VBox varBox = new VBox(labelAvgWT, labelAvgTA);
         varBox.setSpacing(10);
         VBox eqBox = new VBox(equal1, equal2);
         eqBox.setSpacing(10);
         VBox valBox = new VBox(AvgWT, AvgTA);
         valBox.setSpacing(10);
-
-        HBox hb2 = new HBox(varBox,eqBox);  //,valBox
+        HBox hb2 = new HBox(varBox,eqBox);
         hb2.setSpacing(10);
-
         RestartButton.setAlignment(Pos.CENTER);
         FlowPane fp = new FlowPane(hb2, RestartButton);
         fp.setVgap(15);
-
         VBox vb = new VBox(hb2,RestartButton);
         vb.setStyle("-fx-padding: 16;");
         vb.setSpacing(15);
         hb.getChildren().add(vb);
-
-        Boolean done = false;
-        int time = 1000;
-
         final NumberAxis xAxis = new NumberAxis(0, totalTime, 1);
         final CategoryAxis yAxis = new CategoryAxis();
-        final StackedBarChart<Number, String> bc =
-                new StackedBarChart<>(xAxis, yAxis);
+        final StackedBarChart<Number, String> bc = new StackedBarChart<>(xAxis, yAxis);
 
         bc.setTitle("Gantt Chart");
         bc.setLegendVisible(false);
@@ -533,21 +455,13 @@ public class SchedulingApp extends Application {
         ChartLegend chartLegend = new ChartLegend();
         chartLegend.addRow(1);
         chartLegend.setAlignment(Pos.CENTER);
-
         VBox vBox = new VBox();
         vBox.getChildren().addAll(bc, chartLegend);
         vBox.getChildren().add(hb);
-
         StackPane root = new StackPane();
         root.getChildren().add(vBox);
-
-
         Scene scene = new Scene(root, 900, 600);
-
         stage.setScene(scene);
-        //stage.setFullScreen(true);
-        //stage.setResizable(false);
-        //stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         stage.setTitle("Gantt Chart");
         stage.show();
 
@@ -580,17 +494,13 @@ public class SchedulingApp extends Application {
                 new KeyFrame(Duration.millis(1000), (ActionEvent actionEvent) -> {
 
                     for (int i = 0; i < nProcesses; i++) {
-
                         chartLegend.getChildren().remove(remainingBurstTimeLable.get(i));
-
                     }
-
                     XYChart.Series my_s = series.get(k);
                     String name = "P("+bs.get(r).getPid()+")";
                     if( (name.compareTo(my_s.getName()) != 0 )&&(my_s.getName().compareTo("EMPTY")!=0))
                         r++;
                     k++;
-
                     Burst b = bs.get(r);
                     data = new XYChart.Data<>(1, "");
                     data.nodeProperty().addListener(new ChangeListener<Node>() {
@@ -602,16 +512,13 @@ public class SchedulingApp extends Application {
                             else{
                                 newNode.setStyle("-fx-bar-fill: " + ps.get(b.getPid()-1).color + ";");
                             }
-
                         }
                     });
 
                     my_s.getData().set(0, data);
-
                     if(my_s.getName().compareTo("EMPTY")!=0){
                         ps.get(b.getPid()-1).decrementRt(1);
                     }
-
                     String s = " ";
                     for (int i = 0; i < nProcesses; i++) {
                         s += ps.get(i).getRt();
@@ -620,18 +527,14 @@ public class SchedulingApp extends Application {
                         chartLegend.add(remainingBurstTimeLable.get(i), i, 2);
                         s = " ";
                     }
-
                     if (k == series.size()) {
                         hb2.getChildren().add(valBox);
                         timeline.stop();
                     }
                 }));
-
-
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         bc.setAnimated(false);
-
 
         RestartButton.setOnAction(e -> {
             scheduler = null;
@@ -643,98 +546,101 @@ public class SchedulingApp extends Application {
             r = 0;
             k = 0;
             data = null;
-
             scene1(stage);
         });
 
         ButtonAddProcess.setOnAction(e -> {
-            Algorithm finalAlgo = null;
 
-            timeline.pause();
+            if (burstTime == null) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Error");
+                alert.setHeaderText("Enter the new processes burst time.");
+                alert.showAndWait();
+            } else {
+                if (!(burstTime.getText().matches("-?\\d+"))) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Enter a Numerical value.");
+                    alert.showAndWait();
+                } else {
+                    Algorithm finalAlgo = null;
+                    timeline.pause();
+                    int ar = k;
+                    int bt = Integer.parseInt(burstTime.getText());
+                    int p = 0;
+                    if(isPriority){
+                        p = Integer.parseInt(priority.getText());
+                    }
+                    newProcess = new Process(nProcesses+1, ar, bt, p);
+                    newProcess.color = color[nProcesses];
+                    ps.add(newProcess);
+                    remainingBurstTimeLable.add(new Label(""));
+                    chartLegend.addColumn(nProcesses, createChartLegend(ps.get(nProcesses).color), new Label("P" + ps.get(nProcesses).getPid()));
+                    String str = ps.get(nProcesses).getRt()+"";
+                    remainingBurstTimeLable.get(nProcesses).setText(str);
+                    remainingBurstTimeLable.get(nProcesses).setAlignment(Pos.CENTER);
+                    chartLegend.add(remainingBurstTimeLable.get(nProcesses), nProcesses, 2);
+                    nProcesses++;
+                    vBoxProcess.getChildren().set(1,new Label("Process" + (nProcesses+1)));
+                    totalTime+=bt;
+                    for(int i=0; i<ps.size();i++){
+                        System.out.println("P"+ps.get(i).getPid()+ " " + ps.get(i).getAr() +" "+ ps.get(i).getBt() +" "+ps.get(i).getRt());
+                    }
+                    for(int i=0; i<bs.size(); i++){
+                        Burst b = bs.get(i);
+                        for(int j=0; j<b.getQt(); j++){
+                            series.remove(0);
+                        }
+                    }
 
-            int ar = k;
-            int bt = Integer.parseInt(burstTime.getText());
-            int p = 0;
-            if(isPriority){
-                p = Integer.parseInt(priority.getText());
-            }
-            newProcess = new Process(nProcesses+1, ar, bt, p);
-            newProcess.color = color[nProcesses];
-            ps.add(newProcess);
-            remainingBurstTimeLable.add(new Label(""));
+                    switch(scheduler){
+                        case "FCFS":
+                            finalAlgo = new FCFS(nProcesses,ps);
+                            break;
+                        case "Round Robin":
+                            finalAlgo = new RoundRobin(ps.size(), ps, quantum);
+                            break;
+                        case "SJF Preemptive":
+                            finalAlgo = new Preemptive(ps.size(), ps);
+                            break;
+                        case "SJF Non Preemptive":
+                            finalAlgo = new Non_Preemptive(ps.size(), ps);
+                            break;
+                        case "Priority Preemptive":
+                            finalAlgo = new Preemptive(ps.size(), ps);
+                            break;
+                        case "Priority Non Preemptive":
+                            finalAlgo = new Non_Preemptive(ps.size(), ps);
+                            break;
+                        default:
+                            finalAlgo = new FCFS(nProcesses,ps);
+                            break;
+                    }
 
-            chartLegend.addColumn(nProcesses, createChartLegend(ps.get(nProcesses).color), new Label("P" + ps.get(nProcesses).getPid()));
-            String str = ps.get(nProcesses).getRt()+"";
-            remainingBurstTimeLable.get(nProcesses).setText(str);
-            remainingBurstTimeLable.get(nProcesses).setAlignment(Pos.CENTER);
-            chartLegend.add(remainingBurstTimeLable.get(nProcesses), nProcesses, 2);
+                    bs = finalAlgo.schedule(scheduler);
+                    avgWT = finalAlgo.compute_avgwt();
+                    avgTA = finalAlgo.compute_avgta();
+                    AvgWT.setText(Float.toString(avgWT));
+                    AvgTA.setText(Float.toString(avgTA));
 
+                    for(int i=0; i<bs.size();i++){
+                        System.out.println("P"+bs.get(i).getPid()+ " " + bs.get(i).getQt());
+                    }
+                    for(int i=0; i<bs.size(); i++){
+                        Burst b = bs.get(i);
+                        for(int j=0; j<b.getQt(); j++){
+                            XYChart.Series s = new XYChart.Series();
+                            s.setName("P("+ b.getPid()+ ")");
+                            s.getData().add(new XYChart.Data(0,""));
+                            series.add(s);
+                            bc.getData().add(s);
+                        }
+                    }
+                    pLabel.concat("    P" + newProcess.getPid());
+                    xAxis.setUpperBound(totalTime);
 
-            nProcesses++;
-            vBoxProcess.getChildren().set(1,new Label("Process" + (nProcesses+1)));
-
-            totalTime+=bt;
-
-
-            for(int i=0; i<ps.size();i++){
-                System.out.println("P"+ps.get(i).getPid()+ " " + ps.get(i).getAr() +" "+ ps.get(i).getBt() +" "+ps.get(i).getRt());
-            }
-
-            for(int i=0; i<bs.size(); i++){
-                Burst b = bs.get(i);
-                for(int j=0; j<b.getQt(); j++){
-                    series.remove(0);
                 }
             }
-
-            switch(scheduler){
-                case "FCFS":
-                    finalAlgo = new FCFS(nProcesses,ps);
-                    break;
-                case "Round Robin":
-                    finalAlgo = new RoundRobin(ps.size(), ps, quantum);
-                    break;
-                case "SJF Preemptive":
-                    finalAlgo = new Preemptive(ps.size(), ps);
-                    break;
-                case "SJF Non Preemptive":
-                    finalAlgo = new Non_Preemptive(ps.size(), ps);
-                    break;
-                case "Priority Preemptive":
-                    finalAlgo = new Preemptive(ps.size(), ps);
-                    break;
-                case "Priority Non Preemptive":
-                    finalAlgo = new Non_Preemptive(ps.size(), ps);
-                    break;
-                default:
-                    finalAlgo = new FCFS(nProcesses,ps);
-                    break;
-            }
-
-            bs = finalAlgo.schedule(scheduler);
-            avgWT = finalAlgo.compute_avgwt();
-            avgTA = finalAlgo.compute_avgta();
-
-            AvgWT.setText(Float.toString(avgWT));
-            AvgTA.setText(Float.toString(avgTA));
-
-            for(int i=0; i<bs.size();i++){
-                System.out.println("P"+bs.get(i).getPid()+ " " + bs.get(i).getQt());
-            }
-
-            for(int i=0; i<bs.size(); i++){
-                Burst b = bs.get(i);
-                for(int j=0; j<b.getQt(); j++){
-                    XYChart.Series s = new XYChart.Series();
-                    s.setName("P("+ b.getPid()+ ")");
-                    s.getData().add(new XYChart.Data(0,""));
-                    series.add(s);
-                    bc.getData().add(s);
-                }
-            }
-
-            pLabel.concat("    P" + newProcess.getPid());
-            xAxis.setUpperBound(totalTime);
             timeline.play();
         });
     }
@@ -756,13 +662,6 @@ public class SchedulingApp extends Application {
                 addColumn(i, createChartLegend(ps.get(i).color), new Label("P" + ps.get(i).getPid()));
             }
         }
-
-
-        public static void main(String[] args) {
-            launch(args);
-        }
-
     }
-
 
 }
