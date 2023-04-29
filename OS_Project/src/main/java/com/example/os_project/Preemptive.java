@@ -72,7 +72,7 @@ public class Preemptive extends Algorithm {
                     break;
                 }
             }
-            if ( i == burst.size()-1){
+            if ( i == burst.size()-1 && burst.get(i).getPid()!=burst.get(i-1).getPid()){
                 result.add(new Burst(burst.get(i).getPid(),1));
             }
         }
