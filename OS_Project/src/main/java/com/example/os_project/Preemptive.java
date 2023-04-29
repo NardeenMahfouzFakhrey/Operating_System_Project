@@ -72,6 +72,9 @@ public class Preemptive extends Algorithm {
                     break;
                 }
             }
+            if ( i == burst.size()-1){
+                result.add(new Burst(burst.get(i).getPid(),1));
+            }
         }
 
         avg_turnaround_time = avg_turnaround_time / number_of_process;
