@@ -24,7 +24,7 @@ public class RoundRobin extends Algorithm {
         }
     }
 
-
+/*Scheduling Function*/
     @Override
     public ArrayList<Burst> schedule(String algo_Type){
         int currentTime=0;
